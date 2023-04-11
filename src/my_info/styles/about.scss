@@ -1,0 +1,36 @@
+@import "./variables";
+
+.about {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    background: $second-bg-color;
+    .about-img {
+        img {
+            width: 35vw;
+            height: 35vw;
+            object-fit: cover;
+            box-shadow: 0 0 1rem $main-color;
+            border-radius: 2rem;
+        }
+    }
+    .about-content {
+        .heading {
+            text-align: left;
+            font-size: 4.5rem;
+        }
+
+        h3 {
+            font-size: 2.6rem;
+        }
+
+        .boxDetailAbout {
+            margin: 2rem 0 3rem;
+            padding-left: 20px;
+            li {
+            font-size: 1.6rem;
+        }
+        }
+    }
+}

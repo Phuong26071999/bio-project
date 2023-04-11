@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "icon": "bx bx-link-external",
+        "title": "Web Design",
+        "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit."
+    },
+    {
+        "id": 2,
+        "icon": "bx bx-link-external",
+        "title": "Web Design",
+        "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit."
+    },
+    {
+        "id": 3,
+        "icon": "bx bx-link-external",
+        "title": "Web Design",
+        "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit."
+    },
+    {
+        "id": 4,
+        "icon": "bx bx-link-external",
+        "title": "Web Design",
+        "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit."
+    },
+    {
+        "id": 5,
+        "icon": "bx bx-link-external",
+        "title": "Web Design",
+        "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit."
+    },
+    {
+        "id": 6,
+        "icon": "bx bx-link-external",
+        "title": "Web Design",
+        "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit."
+    }
+]

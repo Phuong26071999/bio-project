@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "icon": "bx bx-code-alt",
+        "title": "Web Development",
+        "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eius veniam eos quasi nihil vero harum exercitationem numquam quae veritatis! Reprehenderit, adipisci non eaque nulla dolor maxime vero ipsa natus numquam?"
+    },
+    {
+        "id": 2,
+        "icon": "bx bxs-paint",
+        "title": "Graphic Design",
+        "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eius veniam eos quasi nihil vero harum exercitationem numquam quae veritatis! Reprehenderit, adipisci non eaque nulla dolor maxime vero ipsa natus numquam?"
+    },
+    {
+        "id": 3,
+        "icon": "bx bx-bar-chart-alt",
+        "title": "Digital Marketing",
+        "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eius veniam eos quasi nihil vero harum exercitationem numquam quae veritatis! Reprehenderit, adipisci non eaque nulla dolor maxime vero ipsa natus numquam?"
+    }
+]

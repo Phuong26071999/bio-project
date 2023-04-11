@@ -1,3 +1,5 @@
+@import "./my_info/styles/variables";
+
 .App {
   text-align: center;
 }
@@ -35,4 +37,30 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  scroll-behavior: smooth !important;
+  /* font-family: ; */
+}
+
+html {
+  font-size: 62.5%;
+  overflow-x: hidden;
+  scroll-behavior: smooth !important;
+}
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: $bg-color;
+  color: $text-color;
+  scroll-behavior: smooth !important;
 }

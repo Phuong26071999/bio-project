@@ -1,0 +1,47 @@
+@import "./variables";
+
+.coverHeader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 2rem 9%;
+    background: $bg-color;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.sticky {
+    border-bottom: .1rem solid rgba(0, 0, 0, .2);
+}
+
+.logo {
+    font-size: 2.5rem;
+    color: $text-color;
+    font-size: 600;
+    cursor: default;
+}
+
+.navbar {
+    display: flex;
+    gap: 4rem;
+    a {
+        font-size: 1.7rem;
+        color: $text-color;
+        transition: .3s;
+        &:hover {
+            color: $main-color;
+        }
+    }
+    .active {
+        color: $main-color;
+    }
+}
+
+#menu-icon {
+    font-size: 3.6rem;
+    color: $text-color;
+    display: none;
+}
