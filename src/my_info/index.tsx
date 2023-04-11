@@ -9,7 +9,6 @@ import Services from './components/Services';
 import ScrollReveal from 'scrollreveal';
 import './styles/index.scss';
 
-
 const MyInfo = () => {
   useEffect(() => {
     ScrollReveal({
