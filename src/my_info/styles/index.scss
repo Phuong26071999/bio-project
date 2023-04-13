@@ -89,7 +89,7 @@ h2 {
         }
         .home-img {
             img {
-                width: 70vw;
+                width: 60vw;
                 margin: 4rem;
             }
         }
@@ -97,9 +97,12 @@ h2 {
 
     .about {
         flex-direction: column-reverse;
-        img {
-            width: 70vw;
-            margin-top: 4rem;
+        .about-img {
+            img {
+                width: 60vw;
+                height: 60vw;
+                margin-bottom: 2rem;
+            }
         }
     }
 
@@ -119,11 +122,22 @@ h2 {
             grid-template-columns: repeat(2, 1fr);
         }
     }
+
+    .services {
+        .services-container {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
 }
 
 @media (max-width: 617px) {
     .portfolio {
         .portfolio-container {
+            grid-template-columns: 1fr;
+        }
+    }
+    .services {
+        .services-container {
             grid-template-columns: 1fr;
         }
     }
@@ -141,6 +155,12 @@ h2 {
                     width: 100%;
                 }
             }
+        }
+    }
+
+    .footer {
+        .footer-text {
+            p { font-size: 1.4rem; }
         }
     }
 }
