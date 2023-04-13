@@ -37,18 +37,18 @@ const Header = () => {
         openMenu && (<nav className='navbar'>
         <a href="#home" onClick={() => handleActiveSection('Home')} className={flagActive === 'Home' ? 'active' : ''}>Home</a>
         <a href="#about" onClick={() => handleActiveSection('About')} className={flagActive === 'About' ? 'active' : ''}>About</a>
-        <a href="#services" onClick={() => handleActiveSection('Services')} className={flagActive === 'Services' ? 'active' : ''}>Services</a>
-        <a href="#portfolio" onClick={() => handleActiveSection('Protfolio')} className={flagActive === 'Protfolio' ? 'active' : ''}>Protfolio</a>
+        <a href="#services" onClick={() => handleActiveSection('Services')} className={flagActive === 'Services' ? 'active' : ''}>Skills</a>
+        <a href="#portfolio" onClick={() => handleActiveSection('Protfolio')} className={flagActive === 'Protfolio' ? 'active' : ''}>Projects</a>
         <a href="#contact" onClick={() => handleActiveSection('Contact')} className={flagActive === 'Contact' ? 'active' : ''}>Contact</a>
       </nav>)
       ) : (<nav className='navbar'>
       <a href="#home" onClick={() => handleActiveSection('Home')} className={flagActive === 'Home' ? 'active' : ''}>Home</a>
       <a href="#about" onClick={() => handleActiveSection('About')} className={flagActive === 'About' ? 'active' : ''}>About</a>
-      <a href="#services" onClick={() => handleActiveSection('Services')} className={flagActive === 'Services' ? 'active' : ''}>Services</a>
-      <a href="#portfolio" onClick={() => handleActiveSection('Protfolio')} className={flagActive === 'Protfolio' ? 'active' : ''}>Protfolio</a>
+      <a href="#services" onClick={() => handleActiveSection('Services')} className={flagActive === 'Services' ? 'active' : ''}>Skills</a>
+      <a href="#portfolio" onClick={() => handleActiveSection('Protfolio')} className={flagActive === 'Protfolio' ? 'active' : ''}>Projects</a>
       <a href="#contact" onClick={() => handleActiveSection('Contact')} className={flagActive === 'Contact' ? 'active' : ''}>Contact</a>
     </nav>)}
-      
+
     </div>
   );
 }

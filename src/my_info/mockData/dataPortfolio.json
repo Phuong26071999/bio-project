@@ -2,37 +2,36 @@
     {
         "id": 1,
         "icon": "bx bx-link-external",
-        "title": "Web Design",
-        "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit."
+        "title": "PPJ IDE",
+        "link": "#",
+        "content": "This is a system used to manage the details of the PPJ Sampling process"
     },
     {
         "id": 2,
         "icon": "bx bx-link-external",
-        "title": "Web Design",
-        "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit."
+        "title": "PPJ Sampling",
+        "link": "#",
+        "content": "This is the factory's product sample management system. Including feature: management sample request, operation, report, authentication,..."
     },
     {
         "id": 3,
         "icon": "bx bx-link-external",
-        "title": "Web Design",
-        "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit."
+        "title": "PPJ Production",
+        "link": "#",
+        "content": "This is the factory's product quantity management system. Including feature: Show product information, update progress, report, authentication,..."
     },
     {
         "id": 4,
         "icon": "bx bx-link-external",
-        "title": "Web Design",
-        "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit."
+        "title": "Autumn Shop",
+        "link": "#",
+        "content": "A website for online sales with basic purchasing features and product management"
     },
     {
         "id": 5,
         "icon": "bx bx-link-external",
-        "title": "Web Design",
-        "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit."
-    },
-    {
-        "id": 6,
-        "icon": "bx bx-link-external",
-        "title": "Web Design",
+        "link": "https://responsive-web-star-bucks.vercel.app",
+        "title": "Responsive Website",
         "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit."
     }
 ]

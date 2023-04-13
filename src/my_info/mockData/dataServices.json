@@ -1,20 +1,44 @@
 [
     {
         "id": 1,
-        "icon": "bx bx-code-alt",
-        "title": "Web Development",
-        "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eius veniam eos quasi nihil vero harum exercitationem numquam quae veritatis! Reprehenderit, adipisci non eaque nulla dolor maxime vero ipsa natus numquam?"
+        "icon": "bx bxl-javascript",
+        "title": "Javascript",
+        "link": "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript",
+        "content": "JavaScript is a scripting or programming language that allows you to implement complex features on web pages"
     },
     {
         "id": 2,
-        "icon": "bx bxs-paint",
-        "title": "Graphic Design",
-        "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eius veniam eos quasi nihil vero harum exercitationem numquam quae veritatis! Reprehenderit, adipisci non eaque nulla dolor maxime vero ipsa natus numquam?"
+        "icon": "bx bxl-sass",
+        "title": "SCSS",
+        "link": "https://sass-lang.com/guide",
+        "content": "SCSS is a preprocessor scripting language that is compiled into CSS"
     },
     {
         "id": 3,
-        "icon": "bx bx-bar-chart-alt",
-        "title": "Digital Marketing",
-        "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eius veniam eos quasi nihil vero harum exercitationem numquam quae veritatis! Reprehenderit, adipisci non eaque nulla dolor maxime vero ipsa natus numquam?"
+        "icon": "bx bxl-react",
+        "title": "ReactJS",
+        "link": "https://react.dev",
+        "content": "The library for web and native user interfaces. React lets you build user interfaces out of individual pieces called components"
+    },
+    {
+        "id": 4,
+        "icon": "bx bxl-typescript",
+        "title": "Typescript",
+        "link": "https://www.typescriptlang.org",
+        "content": "TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale"
+    },
+    {
+        "id": 5,
+        "icon": "bx bxl-redux",
+        "title": "Redux",
+        "link": "https://redux.js.org",
+        "content": "A Predictable State Container for JS Apps. It helps you write applications that behave consistently, run in different environments, and are easy to test"
+    },
+    {
+        "id": 6,
+        "icon": "bx bx-book-content",
+        "title": "Ag-grid",
+        "link": "https://www.ag-grid.com/react-data-grid",
+        "content": "AG Grid is a fully-featured and highly customizable JavaScript data grid"
     }
 ]

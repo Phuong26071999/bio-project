@@ -23,7 +23,7 @@ const About = () => {
                 return (<li key={item}>{item}</li>)
               })}
             </ul>
-            <a href="# " className="btn">Read More</a>            
+            <a href="# " className="btn" style={{ paddingBottom: '14px' }}><span>Read More</span></a>            
         </div>
     </section>
   );
