@@ -4,7 +4,7 @@ import '../styles/services.scss';
 
 const Services = () => {
   return (
-    <section className="services" id="services">
+    <section className="services" id="skills">
         <h2 className="heading">My <span>Skills</span></h2>
         <div className="services-container">
         {dataServices.map((item: any) => {

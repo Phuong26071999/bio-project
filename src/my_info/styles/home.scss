@@ -42,6 +42,10 @@
                 margin: 3rem 1.5rem 3rem 0;
                 transition: .5s ease;
 
+                i {
+                    font-size: 15px;
+                }
+
                 &:hover {
                     background: $main-color;
                     color: $second-bg-color;

@@ -29,7 +29,7 @@ const Header = () => {
             </p>
             <div className="social-media">
                 <a href="https://www.facebook.com/Nemo07/" target={'_blank'} rel="noreferrer" ><i className='bx bxl-facebook' ></i></a>
-                <a href="# " target={'_blank'}  rel="noreferrer"  ><i className='bx bxl-twitter'></i></a>
+                <a href="https://github.com/Phuong26071999" target={'_blank'}  rel="noreferrer"  ><i className='bx bxl-github'></i></a>
                 <a href="https://www.instagram.com/ctain_nemo/" target={'_blank'} rel="noreferrer" ><i className='bx bxl-instagram-alt' ></i></a>
                 <a href="https://www.linkedin.com/in/truonghaihoangphuong/" target={'_blank'} rel="noreferrer" ><i className='bx bxl-linkedin' ></i></a>
             </div>
