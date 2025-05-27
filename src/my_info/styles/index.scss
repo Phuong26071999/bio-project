@@ -33,6 +33,11 @@ h2 {
     html {
         font-size: 55%;
     }
+    .home {
+        .home-img {
+            width: 32vw;
+        }
+    }
 }
 @media (max-width: 991px) {
     .coverHeader {
@@ -88,21 +93,19 @@ h2 {
             }
         }
         .home-img {
-            img {
-                width: 60vw;
-                margin: 4rem;
-            }
+            width: 35vw;
+            height: 50vw;
         }
     }
 
     .about {
         flex-direction: column-reverse;
         .about-img {
-            img {
-                width: 60vw;
-                height: 60vw;
-                margin-bottom: 2rem;
-            }
+            width: 60vw;
+            height: 60vw;
+            // img {
+            //     margin-bottom: 2rem;
+            // }
         }
     }
 

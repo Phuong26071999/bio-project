@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import homeImg from '../../images/HoangPhuong.jpg';
+import homeImg from '../../images/about-2.png';
 import Typed from 'typed.js';
 import '../styles/home.scss';
 
@@ -33,7 +33,7 @@ const Header = () => {
                 <a href="https://www.instagram.com/ctain_nemo/" target={'_blank'} rel="noreferrer" ><i className='bx bxl-instagram-alt' ></i></a>
                 <a href="https://www.linkedin.com/in/truonghaihoangphuong/" target={'_blank'} rel="noreferrer" ><i className='bx bxl-linkedin' ></i></a>
             </div>
-            <a href='TRUONG_HAI_HOANG_PHUONG_FRONT_END_CV.pdf' download='TRUONG_HAI_HOANG_PHUONG_FRONT_END_CV.pdf' className='btn'>Download CV</a>
+            <a href='TruongHaiHoangPhuong.pdf' download='TruongHaiHoangPhuong.pdf' className='btn'>Download CV</a>
         </div>
         <div className="home-img">
           <img src={homeImg} alt="" />
