@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="172 188 926 926" width="926" height="926">
+  <!-- Transparent background. All logo elements are pure white. -->
+  <g fill="#FFFFFF">
+    <!-- Main H shape -->
+    <path d="
+      M344 337
+      H435
+      V551
+      H600
+      V467
+      L690 381
+      V956
+      L600 1054
+      V640
+      H435
+      V808
+      L344 910
+      Z"/>
+
+    <!-- Main P shape -->
+    <path fill-rule="evenodd" d="
+      M582 337
+      H816
+      C925 337 990 405 990 505
+      C990 611 919 680 816 680
+      H690
+      V956
+      L600 1054
+      V425
+      L582 425
+      Z
+
+      M690 425
+      V591
+      H812
+      C869 591 902 557 902 505
+      C902 454 870 425 812 425
+      Z"/>
+
+    <!-- Digital pixel fragments -->
+    <rect x="297" y="249" width="21" height="20" rx="1"/>
+    <rect x="329" y="284" width="47" height="48" rx="2"/>
+    <rect x="303" y="337" width="36" height="38" rx="2"/>
+    <rect x="328" y="380" width="48" height="47" rx="2"/>
+    <rect x="350" y="421" width="26" height="24" rx="2"/>
+    <rect x="280" y="308" width="18" height="18" rx="1" opacity=".72"/>
+    <rect x="300" y="281" width="15" height="15" rx="1" opacity=".82"/>
+
+    <!-- Small square cut-style detail -->
+    <rect x="374" y="406" width="12" height="12"/>
+  </g>
+
+  <!-- Circuit traces -->
+  <g fill="none" stroke="#FFFFFF" stroke-width="11" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M618 777 V846"/>
+    <path d="M690 716 V793 L665 819 V896 L615 946"/>
+  </g>
+
+  <!-- Circuit nodes -->
+  <g fill="none" stroke="#FFFFFF" stroke-width="11">
+    <circle cx="618" cy="860" r="17"/>
+    <circle cx="665" cy="804" r="17"/>
+    <circle cx="610" cy="969" r="14"/>
+  </g>
+</svg>

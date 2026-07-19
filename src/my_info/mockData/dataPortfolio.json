@@ -1,37 +1,149 @@
 [
     {
         "id": 1,
-        "icon": "bx bx-link-external",
-        "title": "PPJ IDE",
-        "link": "#",
-        "content": "This is a system used to manage the details of the PPJ Sampling process"
+        "title": "POS System",
+        "company": "Xsofts POS",
+        "period": "Jul 2024 – Now",
+        "content": "Comprehensive Point of Sale system for salon and retail businesses: appointment scheduling, waiting list, customer management, check-in and receipt printing.",
+        "description": "Worked on a comprehensive Point of Sale (POS) system designed for salon and retail businesses, covering daily operational workflows such as appointment scheduling, customer management, waiting lists, check-in, ticket processing, payment, portal and receipt printing.",
+        "responsibilities": [
+            "Developed, enhanced, and maintained features based on business requirements, merchant requests, and operational needs.",
+            "Took primary responsibility for key modules including Appointment Scheduling, Waiting List, Customer Management, Portal and Check-in.",
+            "Implemented feature improvements and updates based on feedback from the QC/QA team.",
+            "Investigated and resolved bugs and production issues reported by merchants during daily usage.",
+            "Supported other modules such as Ticket Management and Receipt Printing.",
+            "Collaborated with team members, QC/QA, and stakeholders to analyze requirements and improve features.",
+            "Proposed technical and functional improvements to enhance usability, performance, and UX."
+        ],
+        "tech": ["ReactJS", "DexieJS", "Material UI", "Socket.IO", "Syncfusion", "Redux", "React Hook Form"],
+        "link": "#"
     },
     {
         "id": 2,
-        "icon": "bx bx-link-external",
-        "title": "PPJ Sampling",
-        "link": "#",
-        "content": "This is the factory's product sample management system. Including feature: management sample request, operation, report, authentication,..."
+        "title": "Booking Online",
+        "company": "Xsofts POS",
+        "period": "2024 – Now",
+        "content": "Online booking website letting customers schedule nail appointments across salons, with deposit payment, OTP verification and reCAPTCHA.",
+        "description": "Developed and maintained an Online Booking website that allows customers to conveniently schedule nail appointments in advance across multiple salon locations. The system also supports deposit payments, OTP verification, and reCAPTCHA to improve booking security and reliability.",
+        "responsibilities": [
+            "Developed and enhanced booking features based on business and merchant requirements.",
+            "Fixed bugs and improved the user interface and booking workflow.",
+            "Optimized the booking steps to provide a smoother and more convenient user experience.",
+            "Implemented and maintained supporting features such as deposit payment, OTP verification, and reCAPTCHA.",
+            "Collaborated with the team to improve existing booking functionalities and user flows."
+        ],
+        "tech": ["ReactJS", "React Query", "MobX", "Ant Design", "Tailwind", "SCSS"],
+        "link": "#"
     },
     {
         "id": 3,
-        "icon": "bx bx-link-external",
-        "title": "PPJ Production",
-        "link": "#",
-        "content": "This is the factory's product quantity management system. Including feature: Show product information, update progress, report, authentication,..."
+        "title": "Tera CRM",
+        "company": "Tera Solutions",
+        "period": "Oct 2023 – Apr 2024",
+        "content": "Customer Relationship Management system to manage and analyze customer interactions, improve retention and optimize sales performance.",
+        "description": "Customer Relationship Management (CRM) is a system designed to assist businesses in managing and analyzing interactions with current and potential customers. The primary goal is to enhance business relationships, increase customer retention, and optimize sales performance.",
+        "responsibilities": [
+            "Attended meetings, planning and daily task estimation following the Scrum process.",
+            "Developed features such as Analytics and Reporting, Order Status and Activity Monitoring, Partner and Customer Information Storage.",
+            "Fixed bugs and redesigned the UI to be more user-friendly.",
+            "Built reusable components and created custom hooks."
+        ],
+        "tech": ["ReactJS", "React Query", "MobX", "Ant Design", "Tailwind", "SCSS"],
+        "link": "https://teracrm.vn"
     },
     {
         "id": 4,
-        "icon": "bx bx-link-external",
-        "title": "Autumn Shop",
-        "link": "#",
-        "content": "A website for online sales with basic purchasing features and product management"
+        "title": "Tera HRM",
+        "company": "Tera Solutions",
+        "period": "Jun 2023 – Dec 2023",
+        "content": "Human Resource Management system focused on employee performance, work schedules, staff information and recruitment/training tracking.",
+        "description": "Human Resource Management (HRM) is a project primarily focused on optimizing employee performance and talent development within the organization. It includes functions and activities aimed at managing, supporting, and developing the organization's human resources.",
+        "responsibilities": [
+            "Developed features such as managing employees' work schedules and all employee information.",
+            "Monitored the status of recruitment and training processes.",
+            "Communicated with each member to assign tasks and support daily meetings.",
+            "Reported tasks according to the Scrum process."
+        ],
+        "tech": ["ReactJS", "React Query", "MobX", "Ant Design", "Tailwind", "SCSS"],
+        "link": "#"
     },
     {
         "id": 5,
-        "icon": "bx bx-link-external",
-        "link": "https://responsive-web-star-bucks.vercel.app",
-        "title": "Responsive Website",
-        "content": "This is a project to clone the UI page of StarBucks"
+        "title": "Tera Solutions Website",
+        "company": "Tera Solutions",
+        "period": "Dec 2023 – Apr 2024",
+        "content": "Company website introducing services, built with SSR and router configuration for the best SEO support, following Figma designs.",
+        "description": "A company website to introduce information about the company as well as its various services, for sales and support purposes.",
+        "responsibilities": [
+            "Built pages using SSR and configured the router to best support SEO.",
+            "Built UX/UI according to Figma design and set up configurations for pages.",
+            "Collaborated with the marketing team to configure SEO and schema for the website.",
+            "Fixed bugs from QC and improved features."
+        ],
+        "tech": ["Next.js", "SCSS", "Axios", "JavaScript", "ES6", "SEO"],
+        "link": "https://terasolutions.vn"
+    },
+    {
+        "id": 6,
+        "title": "GTAS Production",
+        "company": "Mor Software",
+        "period": "Nov 2022 – Apr 2023",
+        "content": "Factory product quantity management system: product information, progress updates, reporting and authentication.",
+        "description": "This is the factory's product quantity management system, including features such as showing product information, updating progress, reporting, and authentication.",
+        "responsibilities": [
+            "Met with customers to clarify new requirements and logical behaviors.",
+            "Designed and built UI/UX for the website based on customer requirements.",
+            "Handled Q&A for every new feature.",
+            "Estimated time for each task."
+        ],
+        "tech": ["ReactJS", "TypeScript", "Redux", "MUI", "AG Grid", "Axios"],
+        "link": "#"
+    },
+    {
+        "id": 7,
+        "title": "GTAS Sampling",
+        "company": "Mor Software",
+        "period": "Jun 2022 – Nov 2022",
+        "content": "Product sample management system for the factory: sample requests, operations, reporting and authentication.",
+        "description": "This is the factory's product sample management system, including features such as sample request management, operations, reporting, and authentication.",
+        "responsibilities": [
+            "Met with the team to clarify new requirements and logical behaviors.",
+            "Designed and built UI/UX for the website based on customer requirements.",
+            "Developed and maintained high-quality, user-friendly web applications.",
+            "Researched the features of the old software and rebuilt them into a website system."
+        ],
+        "tech": ["ReactJS", "Redux", "MUI", "AG Grid", "Axios", "SCSS"],
+        "link": "#"
+    },
+    {
+        "id": 8,
+        "title": "GTAS IDE",
+        "company": "Mor Software",
+        "period": "Jan 2022 – May 2022",
+        "content": "System used to manage the details of the GTAS sampling process, rebuilt from legacy software into a web application.",
+        "description": "This is a system used to manage the details of the GTAS sampling process, rebuilt from the legacy software into a modern web application.",
+        "responsibilities": [
+            "Met with the team to clarify new requirements and logical behaviors.",
+            "Fixed bugs and updated features.",
+            "Researched the features of the old software and rebuilt them into a website system.",
+            "Optimized the performance and accessibility of web applications."
+        ],
+        "tech": ["ReactJS", "Redux", "MUI", "AG Grid", "Axios", "SCSS"],
+        "link": "#"
+    },
+    {
+        "id": 9,
+        "title": "Starbucks Clone",
+        "company": "Personal Project",
+        "period": "Responsive UI Clone",
+        "content": "A responsive website that clones the Starbucks landing page UI, built to practice responsive layout and modern frontend techniques.",
+        "description": "A personal project that recreates the Starbucks landing page interface, focused on practicing pixel-close UI implementation and fully responsive layouts across devices.",
+        "responsibilities": [
+            "Recreated the Starbucks landing page UI with a clean, pixel-close layout.",
+            "Implemented responsive design across desktop, tablet and mobile breakpoints.",
+            "Practiced semantic HTML and reusable, maintainable SCSS components."
+        ],
+        "tech": ["HTML", "SCSS", "JavaScript", "Responsive Design"],
+        "link": "https://responsive-web-star-bucks.vercel.app"
     }
 ]

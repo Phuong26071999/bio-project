@@ -1,44 +1,32 @@
 [
     {
         "id": 1,
-        "icon": "bx bxl-javascript",
-        "title": "Javascript",
-        "link": "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript",
-        "content": "JavaScript is a scripting or programming language that allows you to implement complex features on web pages"
+        "icon": "bx bx-code-alt",
+        "title": "Languages & Markup",
+        "skills": ["HTML", "CSS", "JavaScript (ES6)", "TypeScript", "SQL"]
     },
     {
         "id": 2,
-        "icon": "bx bxl-sass",
-        "title": "SCSS",
-        "link": "https://sass-lang.com/guide",
-        "content": "SCSS is a preprocessor scripting language that is compiled into CSS"
+        "icon": "bx bxl-react",
+        "title": "Frameworks & Libraries",
+        "skills": ["React", "React Hooks", "Next.js", "Redux", "React Query", "Jest"]
     },
     {
         "id": 3,
-        "icon": "bx bxl-react",
-        "title": "ReactJS",
-        "link": "https://react.dev",
-        "content": "The library for web and native user interfaces. React lets you build user interfaces out of individual pieces called components"
+        "icon": "bx bx-palette",
+        "title": "UI & Styling",
+        "skills": ["SCSS", "Tailwind", "Material UI", "Ant Design", "AG Grid"]
     },
     {
         "id": 4,
-        "icon": "bx bxl-typescript",
-        "title": "Typescript",
-        "link": "https://www.typescriptlang.org",
-        "content": "TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale"
+        "icon": "bx bx-server",
+        "title": "Tools & Practices",
+        "skills": ["RESTful APIs", "Basic UX/UI", "Agile / Scrum", "Git"]
     },
     {
         "id": 5,
-        "icon": "bx bxl-redux",
-        "title": "Redux",
-        "link": "https://redux.js.org",
-        "content": "A Predictable State Container for JS Apps. It helps you write applications that behave consistently, run in different environments, and are easy to test"
-    },
-    {
-        "id": 6,
-        "icon": "bx bx-book-content",
-        "title": "Ag-grid",
-        "link": "https://www.ag-grid.com/react-data-grid",
-        "content": "AG Grid is a fully-featured and highly customizable JavaScript data grid"
+        "icon": "bx bx-conversation",
+        "title": "Soft Skills",
+        "skills": ["Communication", "Presentation", "Teamwork", "Time management"]
     }
 ]

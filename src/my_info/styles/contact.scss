@@ -6,45 +6,139 @@
         line-height: 1.2;
         text-align: center;
         font-size: 4.5rem;
-        margin-bottom: 3rem;
-
+        margin-bottom: 4rem;
     }
 
-    form {
-        max-width: 70rem;
-        margin: 1rem auto;
-        text-align: center;
-        margin-bottom: 3rem;
+    .contact-info {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        max-width: 100rem;
+        margin: 0 auto;
 
-        .input-box {
+        .contact-card {
+            position: relative;
             display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            input {
-                width: 49%;
-                padding: 1.5rem;
-                font-size: 1.6rem;
-                color: $text-color;
-                background: $second-bg-color;
-                border-radius: .8rem;
-                margin: .7rem 0;
+            align-items: center;
+            gap: 1.5rem;
+            background: $second-bg-color;
+            border: .2rem solid rgba(255, 255, 255, .06);
+            border-radius: 1.6rem;
+            padding: 2.2rem 2rem;
+            overflow: hidden;
+            transition: .4s ease;
+            color: $text-color;
+
+            // sliding highlight on hover
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 238, 255, .06);
+                transform: translateX(-101%);
+                transition: transform .45s ease;
+            }
+
+            i {
+                position: relative;
+                z-index: 1;
+                font-size: 2.6rem;
+                color: $second-bg-color;
+                background: $main-color;
+                min-width: 5.2rem;
+                height: 5.2rem;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                box-shadow: 0 0 1rem rgba(0, 238, 255, .5);
+                transition: .4s ease;
+            }
+
+            .contact-detail {
+                position: relative;
+                z-index: 1;
+                h4 {
+                    font-size: 1.7rem;
+                    color: $main-color;
+                    margin-bottom: .3rem;
+                }
+                p {
+                    font-size: 1.5rem;
+                    word-break: break-word;
+                    transition: color .3s ease;
+                }
+            }
+
+            &:hover {
+                border-color: $main-color;
+                transform: translateY(-.6rem);
+                box-shadow: 0 .8rem 2rem rgba(0, 0, 0, .35);
+
+                &::before { transform: translateX(0); }
+
+                i {
+                    transform: scale(1.08) rotate(-6deg);
+                }
+
+                .contact-detail p { color: $main-color; }
             }
         }
-        textarea {
-            width: 100%;
-            padding: 1.5rem;
-            font-size: 1.6rem;
-            color: $text-color;
-            background: $second-bg-color;
-            border-radius: .8rem;
-            margin: .7rem 0;
-            resize: none;
-        }
-
-        .btn {
-            margin-top: 2rem;
-            cursor: pointer;
-        }
     }
 
+    .contact-social {
+        display: flex;
+        justify-content: center;
+        gap: 1.6rem;
+        margin-top: 4rem;
+
+        a {
+            position: relative;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 4.8rem;
+            height: 4.8rem;
+            background: transparent;
+            border: .2rem solid $main-color;
+            border-radius: 50%;
+            color: $main-color;
+            overflow: hidden;
+            transition: .5s ease;
+            z-index: 1;
+
+            // fill-up effect
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: $main-color;
+                transform: translateY(100%);
+                transition: transform .4s ease;
+                z-index: -1;
+            }
+
+            i {
+                font-size: 2rem;
+                transition: .4s ease;
+            }
+
+            &:hover {
+                box-shadow: 0 0 1.2rem $main-color;
+                transform: translateY(-.5rem);
+                color: $second-bg-color;
+
+                &::after { transform: translateY(0); }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .contact .contact-info {
+        grid-template-columns: 1fr;
+    }
 }

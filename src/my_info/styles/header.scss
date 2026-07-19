@@ -5,38 +5,101 @@
     top: 0;
     left: 0;
     width: 100%;
-    padding: 2rem 9%;
-    background: $bg-color;
+    padding: 1.6rem 9%;
+    background: rgba(31, 36, 45, .75);
+    backdrop-filter: blur(1rem);
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 100;
+    transition: padding .3s ease, background .3s ease, box-shadow .3s ease;
 }
 
 .sticky {
-    border-bottom: .1rem solid rgba(0, 0, 0, .2);
+    padding: 1.2rem 9%;
+    background: rgba(31, 36, 45, .92);
+    border-bottom: .1rem solid rgba(255, 255, 255, .06);
+    box-shadow: 0 .5rem 2rem rgba(0, 0, 0, .3);
 }
 
 .logo {
-    font-size: 2.5rem;
-    color: $text-color;
-    font-size: 600;
-    cursor: default;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+
+    .logo-img {
+        width: 5.4rem;
+        height: 5.4rem;
+        padding: .7rem;
+        border: .2rem solid $main-color;
+        border-radius: 50%;
+        background: rgba(0, 238, 255, .06);
+        box-shadow: 0 0 .8rem rgba(0, 238, 255, .25);
+        object-fit: contain;
+        transition: .45s cubic-bezier(.2, .8, .3, 1.2);
+    }
+
+    .logo-text {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: $text-color;
+        letter-spacing: .05rem;
+        transition: .4s ease;
+    }
+
+    &:hover {
+        .logo-img {
+            transform: rotate(-10deg) scale(1.1);
+            border-color: $main-color;
+            background: rgba(0, 238, 255, .15);
+            box-shadow: 0 0 1.4rem $main-color;
+        }
+        .logo-text {
+            color: $main-color;
+            text-shadow: 0 0 1rem rgba(0, 238, 255, .5);
+        }
+    }
 }
 
 .navbar {
     display: flex;
-    gap: 4rem;
+    gap: 3.5rem;
+
     a {
+        position: relative;
         font-size: 1.7rem;
+        font-weight: 500;
         color: $text-color;
-        transition: .3s;
+        transition: color .3s ease;
+
+        // animated underline (grows from center)
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -.6rem;
+            width: 100%;
+            height: .22rem;
+            background: $main-color;
+            border-radius: 1rem;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform .35s ease;
+        }
+
         &:hover {
             color: $main-color;
+            &::after {
+                transform: scaleX(1);
+                transform-origin: left;
+            }
         }
-    }
-    .active {
-        color: $main-color;
+
+        &.active {
+            color: $main-color;
+            &::after { transform: scaleX(1); }
+        }
     }
 }
 
@@ -44,4 +107,13 @@
     font-size: 3.6rem;
     color: $text-color;
     display: none;
+    transition: .3s ease;
+
+    &:hover { color: $main-color; }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        a::after { display: none; }
+    }
 }

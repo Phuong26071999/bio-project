@@ -10,10 +10,13 @@ const Services = () => {
         {dataServices.map((item: any) => {
             return (
                     <div key={item.id} className="services-box">
-                        <i className={item.icon}></i>
+                        <span className="services-icon"><i className={item.icon}></i></span>
                         <h3>{item.title}</h3>
-                        <p>{item.content}</p>
-                        <a href={item.link} target={'_blank'} className='btn' rel="noreferrer">Read More</a>
+                        <div className="skill-tags">
+                          {item.skills.map((skill: string) => (
+                            <span key={skill} className="skill-tag">{skill}</span>
+                          ))}
+                        </div>
                     </div>
             )
         })}

@@ -7,7 +7,7 @@ const Header = () => {
 
   useEffect(() => {
     const typed = new Typed('.multiple-text', {
-      strings: ['Frontend Developer', 'Younger', 'Technology Enthusiast'],
+      strings: ['Frontend Developer', 'React Developer', 'Software Engineer'],
       typeSpeed: 100,
       backSpeed: 100,
       backDelay: 1000,
@@ -25,7 +25,9 @@ const Header = () => {
             <h3>Hello, it's Me</h3>
             <h1>Hoang Phuong</h1>
             <h3>And I'm a <span className='multiple-text'></span></h3>
-            <p>Welcome to my portfolio! You can click on the "Download CV" button below to get more information about me. I hope you enjoy it and have a good day. 
+            <p>Frontend Developer with 4+ years of experience building scalable web
+            applications with React, Next.js and TypeScript. Passionate about clean code,
+            great user experiences and continuously learning new technologies.
             </p>
             <div className="social-media">
                 <a href="https://www.facebook.com/Nemo07/" target={'_blank'} rel="noreferrer" ><i className='bx bxl-facebook' ></i></a>

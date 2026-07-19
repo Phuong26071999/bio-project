@@ -11,16 +11,17 @@
         height: 35vw;
         box-shadow: 0 0 1rem $main-color;
         border-radius: 2rem;
+        flex-shrink: 0;
         img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             object-position: top;
-            // box-shadow: 0 0 1rem $main-color;
             border-radius: 2rem;
         }
     }
     .about-content {
+        max-width: 55rem;
         .heading {
             text-align: left;
             font-size: 4.5rem;
@@ -28,14 +29,67 @@
 
         h3 {
             font-size: 2.6rem;
+            margin-top: .5rem;
         }
 
-        .boxDetailAbout {
-            margin: 2rem 0 3rem;
-            padding-left: 20px;
-            li {
+        .about-intro {
             font-size: 1.6rem;
+            margin: 1.5rem 0 2.5rem;
+            line-height: 1.7;
         }
+
+        .about-blocks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 3rem;
+
+            .about-block {
+                flex: 1 1 22rem;
+                background: $bg-color;
+                border: .2rem solid $bg-color;
+                border-radius: 1.4rem;
+                padding: 1.8rem 2rem;
+                transition: .4s ease;
+
+                &:hover {
+                    border-color: $main-color;
+                }
+
+                h4 {
+                    font-size: 1.8rem;
+                    color: $main-color;
+                    margin-bottom: 1rem;
+                    display: flex;
+                    align-items: center;
+                    gap: .8rem;
+                    i { font-size: 2.2rem; }
+                }
+
+                p {
+                    font-size: 1.5rem;
+                    margin-bottom: .3rem;
+                }
+
+                span {
+                    font-size: 1.3rem;
+                    opacity: .8;
+                }
+
+                .about-exp {
+                    list-style: none;
+                    li {
+                        font-size: 1.5rem;
+                        margin-bottom: 1rem;
+                        &:last-child { margin-bottom: 0; }
+                        span {
+                            display: block;
+                            font-size: 1.3rem;
+                            opacity: .8;
+                        }
+                    }
+                }
+            }
         }
     }
 }
