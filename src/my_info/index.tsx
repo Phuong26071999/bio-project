@@ -18,7 +18,11 @@ const MyInfo = () => {
       delay: 200,
     });
     ScrollReveal().reveal('.home-content, .heading', { origin: 'top' });
-    ScrollReveal().reveal('.home-img, .services-container, .portfolio-box, .contact-info', { origin: 'bottom' });
+    ScrollReveal().reveal('.home-img, .services-container, .portfolio-box', { origin: 'bottom' });
+    // contact reveals in order: heading (200) -> mascot -> cards -> socials
+    ScrollReveal().reveal('.contact-mascot', { origin: 'bottom', delay: 400 });
+    ScrollReveal().reveal('.contact-info', { origin: 'bottom', delay: 600 });
+    ScrollReveal().reveal('.contact-social', { origin: 'bottom', delay: 800 });
     ScrollReveal().reveal('.home-content h1, .about-img', { origin: 'left' });
     ScrollReveal().reveal('.home-content p, .about-content', { origin: 'right' });
   }, []);

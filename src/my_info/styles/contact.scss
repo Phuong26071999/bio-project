@@ -9,6 +9,59 @@
         margin-bottom: 4rem;
     }
 
+    .contact-mascot {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        margin: -2rem 0 2.5rem;
+
+        // glow pedestal so the character lifts off the dark background
+        &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 22rem;
+            height: 22rem;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: radial-gradient(circle,
+                    rgba(0, 238, 255, .18) 0%,
+                    rgba(0, 238, 255, .07) 45%,
+                    rgba(0, 238, 255, 0) 70%);
+            pointer-events: none;
+        }
+
+        // ground shadow, so it reads as standing on the section
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: -.6rem;
+            left: 50%;
+            width: 9rem;
+            height: 1.6rem;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            background: radial-gradient(ellipse,
+                    rgba(0, 0, 0, .5) 0%,
+                    rgba(0, 0, 0, 0) 70%);
+            pointer-events: none;
+        }
+
+        > * {
+            position: relative;
+            z-index: 1;
+            filter:
+                drop-shadow(0 .6rem .9rem rgba(0, 0, 0, .55)) drop-shadow(0 0 1.4rem rgba(0, 238, 255, .45));
+            transition: filter .4s ease;
+        }
+
+        &:hover > * {
+            filter:
+                drop-shadow(0 .6rem .9rem rgba(0, 0, 0, .55)) drop-shadow(0 0 2.2rem rgba(0, 238, 255, .75));
+        }
+    }
+
     .contact-info {
         display: grid;
         grid-template-columns: repeat(3, 1fr);

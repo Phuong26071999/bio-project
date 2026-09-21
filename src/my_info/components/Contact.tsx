@@ -1,4 +1,5 @@
 import React from "react";
+import { Mascot } from "page-mascot";
 import "../styles/contact.scss";
 
 const Contact = () => {
@@ -41,6 +42,15 @@ const Contact = () => {
       <h2 className="heading">
         Contact <span>Me!</span>
       </h2>
+
+      <div className="contact-mascot">
+        <Mascot
+          directions="/mascots/cat-directions.webp"
+          reactions="/mascots/cat-reactions.webp"
+          size={150}
+          label="Mascot mèo"
+        />
+      </div>
 
       <div className="contact-info">
         {contactItems.map((item) => {
