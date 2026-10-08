@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import About from './components/About';
+import AIChatbot from './components/AIChatbot';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Header from './components/Header';
@@ -35,6 +36,7 @@ const MyInfo = () => {
       <Portfolio />
       <Contact />
       <Footer />
+      <AIChatbot />
     </div>
   );
 }

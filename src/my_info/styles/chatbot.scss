@@ -1,0 +1,94 @@
+@import "./variables";
+
+/* ---------- AI chatbot launcher (always loaded; panel styles live in chatWindow.scss) ---------- */
+.ai-chatbot {
+    position: fixed;
+    right: 2.4rem;
+    bottom: calc(2.4rem + env(safe-area-inset-bottom, 0px) + var(--chat-footer-offset, 0px));
+    z-index: 999; // above the header (100), below the project modal (1000)
+    transition: bottom .35s ease;
+
+    .chat-launcher {
+        position: relative;
+        width: 5.8rem;
+        height: 5.8rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: $main-color;
+        color: $second-bg-color;
+        box-shadow: 0 0 1rem $main-color, 0 .6rem 1.6rem rgba(0, 0, 0, .35);
+        cursor: pointer;
+        transition: transform .3s ease, box-shadow .3s ease;
+        -webkit-tap-highlight-color: transparent;
+
+        i {
+            font-size: 3rem;
+            transition: transform .35s ease;
+        }
+
+        &:hover {
+            transform: translateY(-.3rem) scale(1.05);
+            box-shadow: 0 0 2rem $main-color, 0 .8rem 2rem rgba(0, 0, 0, .4);
+        }
+
+        &:active {
+            transform: scale(.96);
+        }
+
+        &:focus-visible {
+            outline: .2rem solid $text-color;
+            outline-offset: .3rem;
+        }
+
+        // Gentle attention ring until the visitor opens the chat once.
+        &.pulse::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: .2rem solid $main-color;
+            animation: chatLauncherPulse 2.4s ease-out infinite;
+            pointer-events: none;
+        }
+    }
+
+    &.is-open .chat-launcher i {
+        transform: rotate(90deg);
+    }
+}
+
+@keyframes chatLauncherPulse {
+    0% { transform: scale(1); opacity: .8; }
+    70%, 100% { transform: scale(1.6); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ai-chatbot,
+    .ai-chatbot .chat-launcher,
+    .ai-chatbot .chat-launcher i {
+        transition: none;
+    }
+    .ai-chatbot .chat-launcher.pulse::after {
+        animation: none;
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .ai-chatbot {
+        right: 1.6rem;
+        bottom: calc(1.6rem + env(safe-area-inset-bottom, 0px) + var(--chat-footer-offset, 0px));
+
+        .chat-launcher {
+            width: 5.4rem;
+            height: 5.4rem;
+        }
+
+        // The panel is full-screen on phones and has its own close button.
+        &.is-open .chat-launcher {
+            visibility: hidden;
+        }
+    }
+}

@@ -1,21 +1,10 @@
 import React from "react";
 import aboutImg from "../../images/about-img.jpg";
+import dataProfile from "../mockData/dataProfile.json";
 import "../styles/about.scss";
 
 const About = () => {
-  const experiences = [
-    { company: "Xsofts POS", role: "Frontend Developer", period: "2024 – Now" },
-    {
-      company: "Tera Solutions",
-      role: "Frontend Developer",
-      period: "2022 – 2024",
-    },
-    {
-      company: "Mor Software",
-      role: "Frontend Developer",
-      period: "2022 – 2023",
-    },
-  ];
+  const { experiences, education } = dataProfile;
 
   return (
     <section className="about" id="about">
@@ -26,13 +15,8 @@ const About = () => {
         <h2 className="heading">
           About <span>Me</span>
         </h2>
-        <h3>Frontend Developer</h3>
-        <p className="about-intro">
-          I focus on building clean, responsive and maintainable user
-          interfaces. I keep improving my skills and stay open to new
-          technologies and methodologies to meet the changing needs of the
-          industry.
-        </p>
+        <h3>{dataProfile.title}</h3>
+        <p className="about-intro">{dataProfile.aboutIntro}</p>
 
         <div className="about-blocks">
           <div className="about-block">
@@ -54,9 +38,11 @@ const About = () => {
               <i className="bx bxs-graduation"></i> Education
             </h4>
             <p>
-              <strong>Saigon Technology University</strong>
+              <strong>{education.school}</strong>
             </p>
-            <span>Software Engineer &middot; 2017 – 2021</span>
+            <span>
+              {education.degree} &middot; {education.period}
+            </span>
           </div>
         </div>
       </div>
