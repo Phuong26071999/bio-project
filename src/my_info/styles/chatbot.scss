@@ -90,5 +90,22 @@
         &.is-open .chat-launcher {
             visibility: hidden;
         }
+
+        // Solid backdrop over the whole page (oversized so nothing shows behind
+        // Safari's floating toolbars or around the on-screen keyboard).
+        &.is-open::before {
+            content: "";
+            position: fixed;
+            top: -100vh;
+            bottom: -100vh;
+            left: 0;
+            right: 0;
+            background: $second-bg-color;
+            touch-action: none;
+        }
+
+        .chat-window {
+            z-index: 1;
+        }
     }
 }

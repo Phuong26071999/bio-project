@@ -124,15 +124,24 @@ const ChatWindow = ({ open, lang, onClose }: Props) => {
     vv?.addEventListener('scroll', update);
     panel?.addEventListener('focusin', updateAfterKeyboard);
     panel?.addEventListener('focusout', updateAfterKeyboard);
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    // iOS Safari ignores overflow:hidden on body, so pin the body in place instead.
+    // This also stops Safari from scrolling the page when the keyboard opens.
+    const { body } = document;
+    const scrollY = window.scrollY;
+    const previousBody = body.getAttribute('style');
+    Object.assign(body.style, {
+      position: 'fixed', top: `-${scrollY}px`, left: '0', right: '0', width: '100%', overflow: 'hidden',
+    });
     return () => {
+      if (previousBody === null) body.removeAttribute('style');
+      else body.setAttribute('style', previousBody);
+      // 'instant' overrides the site-wide `scroll-behavior: smooth`.
+      window.scrollTo({ top: scrollY, behavior: 'instant' as ScrollBehavior });
       window.clearTimeout(settleTimer);
       vv?.removeEventListener('resize', update);
       vv?.removeEventListener('scroll', update);
       panel?.removeEventListener('focusin', updateAfterKeyboard);
       panel?.removeEventListener('focusout', updateAfterKeyboard);
-      document.body.style.overflow = previousOverflow;
     };
   }, [open]);
 
