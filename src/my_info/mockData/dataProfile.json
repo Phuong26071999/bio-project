@@ -1,0 +1,48 @@
+{
+    "name": "Hoang Phuong",
+    "fullName": "Truong Hai Hoang Phuong",
+    "title": "Frontend Developer",
+    "roles": ["Frontend Developer", "React Developer", "Software Engineer"],
+    "summary": "Frontend Developer with 4+ years of experience building scalable web applications with React, Next.js and TypeScript. Passionate about clean code, great user experiences and continuously learning new technologies.",
+    "aboutIntro": "I focus on building clean, responsive and maintainable user interfaces. I keep improving my skills and stay open to new technologies and methodologies to meet the changing needs of the industry.",
+    "experiences": [
+        { "company": "Xsofts POS", "role": "Frontend Developer", "period": "2024 – Now" },
+        { "company": "Tera Solutions", "role": "Frontend Developer", "period": "2022 – 2024" },
+        { "company": "Mor Software", "role": "Frontend Developer", "period": "2022 – 2023" }
+    ],
+    "education": {
+        "school": "Saigon Technology University",
+        "degree": "Software Engineer",
+        "period": "2017 – 2021"
+    },
+    "cv": {
+        "url": "TruongHaiHoangPhuong.pdf",
+        "fileName": "TruongHaiHoangPhuong.pdf"
+    },
+    "contactItems": [
+        {
+            "icon": "bx bxs-phone",
+            "label": "Phone",
+            "value": "0932 550 587",
+            "link": "tel:+84932550587"
+        },
+        {
+            "icon": "bx bxs-envelope",
+            "label": "Email",
+            "value": "thhphuong2607@gmail.com",
+            "link": "mailto:thhphuong2607@gmail.com"
+        },
+        {
+            "icon": "bx bxs-map",
+            "label": "Location",
+            "value": "Ho Chi Minh City, Vietnam",
+            "link": ""
+        }
+    ],
+    "socials": [
+        { "name": "Facebook", "icon": "bx bxl-facebook", "link": "https://www.facebook.com/Nemo07/" },
+        { "name": "GitHub", "icon": "bx bxl-github", "link": "https://github.com/Phuong26071999" },
+        { "name": "LinkedIn", "icon": "bx bxl-linkedin", "link": "https://www.linkedin.com/in/truonghaihoangphuong/" },
+        { "name": "Instagram", "icon": "bx bxl-instagram-alt", "link": "https://www.instagram.com/ctain_nemo/" }
+    ]
+}

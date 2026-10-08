@@ -1,41 +1,10 @@
 import React from "react";
 import { Mascot } from "page-mascot";
+import dataProfile from "../mockData/dataProfile.json";
 import "../styles/contact.scss";
 
 const Contact = () => {
-  const contactItems = [
-    {
-      icon: "bx bxs-phone",
-      label: "Phone",
-      value: "0932 550 587",
-      link: "tel:+84932550587",
-    },
-    {
-      icon: "bx bxs-envelope",
-      label: "Email",
-      value: "thhphuong2607@gmail.com",
-      link: "mailto:thhphuong2607@gmail.com",
-    },
-    {
-      icon: "bx bxs-map",
-      label: "Location",
-      value: "Ho Chi Minh City, Vietnam",
-      link: "",
-    },
-  ];
-
-  const socials = [
-    { icon: "bx bxl-facebook", link: "https://www.facebook.com/Nemo07/" },
-    { icon: "bx bxl-github", link: "https://github.com/Phuong26071999" },
-    {
-      icon: "bx bxl-linkedin",
-      link: "https://www.linkedin.com/in/truonghaihoangphuong/",
-    },
-    {
-      icon: "bx bxl-instagram-alt",
-      link: "https://www.instagram.com/ctain_nemo/",
-    },
-  ];
+  const { contactItems, socials } = dataProfile;
 
   return (
     <section className="contact" id="contact">

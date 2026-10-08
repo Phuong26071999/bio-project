@@ -5,7 +5,9 @@
   "engines": {
     "node": "24.x"
   },
+  "proxy": "http://localhost:3010",
   "dependencies": {
+    "@google/genai": "^2.28.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -28,7 +30,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev:api": "node scripts/dev-api.js",
+    "test:api": "node --test \"tests/api/*.test.js\""
   },
   "eslintConfig": {
     "extends": [
