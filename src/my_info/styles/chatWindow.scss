@@ -305,6 +305,10 @@
             font: inherit;
             font-size: 1.5rem;
             line-height: 1.5;
+            overflow-y: hidden;
+            // Only visible once the text exceeds max-height.
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 238, 255, .4) transparent;
 
             &::placeholder { color: rgba(255, 255, 255, .45); }
         }

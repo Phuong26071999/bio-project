@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from
 import MessageContent from './MessageContent';
 import { ChatApiError, ChatApiMessage, ChatErrorCode, ChatRole, sendChat } from './chatApi';
 import {
-  ChatLang, SectionId, STRINGS, getSuggestions, getVisibleSection, looksVietnamese,
+  ChatLang, SectionId, STRINGS, getFollowUpSuggestions, getSuggestions, getVisibleSection, looksVietnamese,
 } from './i18n';
 import '../../styles/chatWindow.scss';
 
@@ -25,6 +25,8 @@ const MAX_STORED_MESSAGES = 30;
 const MAX_SENT_MESSAGES = 12;
 const MAX_INPUT_CHARS = 1000;
 const MOBILE_QUERY = '(max-width: 480px)';
+const FOLLOW_UP_DELAY_MS = 10000;
+const MAX_INPUT_HEIGHT = 120;
 
 const newId = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 const isMobile = () => window.matchMedia(MOBILE_QUERY).matches;
@@ -71,6 +73,7 @@ const ChatWindow = ({ open, lang, onClose }: Props) => {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [section, setSection] = useState<SectionId | null>(null);
+  const [showFollowUps, setShowFollowUps] = useState(false);
 
   const messagesRef = useRef(messages);
   const abortRef = useRef<AbortController | null>(null);
@@ -122,16 +125,30 @@ const ChatWindow = ({ open, lang, onClose }: Props) => {
     };
   }, [open]);
 
+  // Offer more questions a while after a successful answer, while the panel is open.
+  const lastMessage = messages[messages.length - 1];
+  const answered = !loading && !!lastMessage && lastMessage.role === 'assistant' && !lastMessage.error;
+  useEffect(() => {
+    setShowFollowUps(false);
+    if (!answered || !open) return;
+    const timer = window.setTimeout(() => setShowFollowUps(true), FOLLOW_UP_DELAY_MS);
+    return () => window.clearTimeout(timer);
+  }, [answered, open, lastMessage]);
+
   useLayoutEffect(() => {
     const list = listRef.current;
     if (list && open) list.scrollTo({ top: list.scrollHeight, behavior: 'smooth' });
-  }, [messages, loading, open]);
+  }, [messages, loading, open, showFollowUps]);
 
   useLayoutEffect(() => {
     const el = inputRef.current;
     if (!el) return;
     el.style.height = 'auto';
-    el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
+    // scrollHeight is rounded down; the extra pixels stop a needless scrollbar
+    // under browser zoom / fractional line heights.
+    const needed = el.scrollHeight + 2;
+    el.style.height = `${Math.min(needed, MAX_INPUT_HEIGHT)}px`;
+    el.style.overflowY = needed > MAX_INPUT_HEIGHT ? 'auto' : 'hidden';
   }, [input]);
 
   const send = useCallback(async (text: string, { base, fromInput = false }: { base?: ChatMessage[]; fromInput?: boolean } = {}) => {
@@ -200,6 +217,12 @@ const ChatWindow = ({ open, lang, onClose }: Props) => {
   const hasConversation = messages.some((m) => m.role === 'user');
   const canSend = input.trim().length > 0 && !loading;
   const showCounter = input.length > MAX_INPUT_CHARS * 0.8;
+
+  const askedQuestions = messages.filter((m) => m.role === 'user').map((m) => m.content);
+  const lastQuestion = askedQuestions[askedQuestions.length - 1];
+  // Follow the language the visitor is actually typing in.
+  const followUpLang: ChatLang = lastQuestion && looksVietnamese(lastQuestion) ? 'vi' : lang;
+  const followUps = showFollowUps && answered ?getFollowUpSuggestions(followUpLang, section, askedQuestions) : [];
 
   return (
     <div
@@ -277,6 +300,19 @@ const ChatWindow = ({ open, lang, onClose }: Props) => {
             </div>
           </div>
         ))}
+
+        {followUps.length > 0 && (
+          <div className="chat-suggestions">
+            <span className="chat-suggestions-title">{STRINGS[followUpLang].followUpHeading}</span>
+            <div className="chat-suggestion-list">
+              {followUps.map((s) => (
+                <button key={s.label} type="button" className="chat-suggestion" onClick={() => send(s.question)}>
+                  {s.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {loading && (
           <div className="chat-msg assistant">

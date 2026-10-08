@@ -25,6 +25,7 @@ export const STRINGS = {
     clear: 'Start a new conversation',
     welcome: `Hi there! 👋 I'm ${name}'s AI assistant. Ask me about ${name}'s skills, experience, projects, or how to get in touch.`,
     suggestionsHeading: 'Try asking',
+    followUpHeading: 'You might also ask',
     placeholder: 'Type your question…',
     send: 'Send message',
     typing: 'Assistant is typing',
@@ -46,6 +47,7 @@ export const STRINGS = {
     clear: 'Bắt đầu cuộc trò chuyện mới',
     welcome: `Xin chào! 👋 Mình là trợ lý AI của ${name}. Bạn có thể hỏi về kỹ năng, kinh nghiệm, dự án hoặc cách liên hệ với ${name}.`,
     suggestionsHeading: 'Gợi ý câu hỏi',
+    followUpHeading: 'Bạn có thể hỏi tiếp',
     placeholder: 'Nhập câu hỏi của bạn…',
     send: 'Gửi tin nhắn',
     typing: 'Trợ lý đang trả lời',
@@ -98,6 +100,14 @@ const SECTION_SUGGESTIONS: Record<ChatLang, Partial<Record<SectionId, Suggestion
 export function getSuggestions(lang: ChatLang, section: SectionId | null): Suggestion[] {
   const contextual = section ? SECTION_SUGGESTIONS[lang][section] : undefined;
   return contextual ? [contextual, ...BASE_SUGGESTIONS[lang]] : BASE_SUGGESTIONS[lang];
+}
+
+/** Suggestions the visitor hasn't asked yet, offered again after an answer. */
+export function getFollowUpSuggestions(lang: ChatLang, section: SectionId | null, asked: string[]): Suggestion[] {
+  const askedSet = new Set(asked.map((q) => q.trim().toLowerCase()));
+  return getSuggestions(lang, section)
+    .filter((s) => !askedSet.has(s.question.toLowerCase()))
+    .slice(0, 4);
 }
 
 /** Finds the page section currently crossing the middle of the viewport. */
