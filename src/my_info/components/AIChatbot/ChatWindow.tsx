@@ -113,14 +113,25 @@ const ChatWindow = ({ open, lang, onClose }: Props) => {
       panel.style.setProperty('--chat-vv-height', `${vv.height}px`);
       panel.style.setProperty('--chat-vv-top', `${vv.offsetTop}px`);
     };
+    // iOS can report the viewport mid keyboard animation; measure again once it settles.
+    let settleTimer = 0;
+    const updateAfterKeyboard = () => {
+      window.clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(update, 350);
+    };
     update();
     vv?.addEventListener('resize', update);
     vv?.addEventListener('scroll', update);
+    panel?.addEventListener('focusin', updateAfterKeyboard);
+    panel?.addEventListener('focusout', updateAfterKeyboard);
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => {
+      window.clearTimeout(settleTimer);
       vv?.removeEventListener('resize', update);
       vv?.removeEventListener('scroll', update);
+      panel?.removeEventListener('focusin', updateAfterKeyboard);
+      panel?.removeEventListener('focusout', updateAfterKeyboard);
       document.body.style.overflow = previousOverflow;
     };
   }, [open]);
