@@ -393,6 +393,9 @@
         border: none;
         border-radius: 0;
         transform-origin: bottom center;
+        // iOS Safari paints the page outside the visual viewport (behind the
+        // floating address bar / keyboard toolbar); cover it with the panel colour.
+        box-shadow: 0 0 0 100vh $second-bg-color;
 
         .chat-header {
             padding-top: calc(1.4rem + env(safe-area-inset-top, 0px));
