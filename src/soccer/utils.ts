@@ -1,4 +1,4 @@
-import { Member, Role } from './types';
+import { Member } from './types';
 
 export const TIERS: Record<number, { label: string; name: string }> = {
   5: { label: 'S', name: 'Xuất sắc' },
@@ -6,12 +6,6 @@ export const TIERS: Record<number, { label: string; name: string }> = {
   3: { label: 'B', name: 'Trung bình' },
   2: { label: 'C', name: 'Đang lên' },
   1: { label: 'D', name: 'Mới chơi' },
-};
-
-export const ROLE_LABEL: Record<Role, string> = {
-  captain: 'Trưởng nhóm',
-  vice: 'Phó nhóm',
-  member: 'Thành viên',
 };
 
 const AVATAR_COLORS = ['#0ef', '#ffc533', '#ff6b6b', '#2ed3a0', '#4aa8ff', '#ff8a3d', '#ff7eb6', '#b6e93b'];
@@ -69,3 +63,38 @@ export function uniqueId(base: string, taken: Set<string>): string {
 export const randomId = () => Math.random().toString(36).slice(2, 10);
 
 export const teamPower = (team: Member[]) => team.reduce((sum, m) => sum + m.tier, 0);
+
+/**
+ * Crops an image file to a centred square and shrinks it to a small JPEG
+ * data URL, so profile photos stay a few KB no matter what the phone shoots.
+ */
+export function resizePhoto(file: File, size = 256, quality = 0.82): Promise<string> {
+  return new Promise((resolve, reject) => {
+    if (!file.type.startsWith('image/')) {
+      reject(new Error('Hãy chọn một file ảnh.'));
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      const side = Math.min(img.naturalWidth, img.naturalHeight);
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        URL.revokeObjectURL(url);
+        reject(new Error('Trình duyệt không xử lý được ảnh này.'));
+        return;
+      }
+      ctx.drawImage(img, (img.naturalWidth - side) / 2, (img.naturalHeight - side) / 2, side, side, 0, 0, size, size);
+      URL.revokeObjectURL(url);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('Không đọc được ảnh này. Thử ảnh JPG hoặc PNG khác.'));
+    };
+    img.src = url;
+  });
+}

@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Member, Role, SoccerState } from '../types';
-import { ROLE_LABEL, TIERS, formatMoney, monthKey, monthLabel } from '../utils';
+import { uploadAvatar } from '../api';
+import { Member, SoccerState } from '../types';
+import { TIERS, formatMoney, monthKey, monthLabel, resizePhoto } from '../utils';
 import Avatar from './Avatar';
 
 interface Props {
   member: Member;
   state: SoccerState;
-  /** Can edit profile, tier and goals (open to everyone). */
+  /** Can edit profile, tier, number, photo and goals (open to everyone). */
   isAdmin: boolean;
   /** Can change fund payments (needs the PIN). */
   fundUnlocked: boolean;
@@ -18,17 +19,23 @@ interface Props {
 
 const MemberDetail = ({ member, state, isAdmin, fundUnlocked, onChange, onTogglePaid, onRemove, onClose }: Props) => {
   const dialogRef = useRef<HTMLDivElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
   const [name, setName] = useState(member.name);
-  const [avatar, setAvatar] = useState(member.avatar);
-  const [avatarError, setAvatarError] = useState('');
+  const [number, setNumber] = useState(member.number === null ? '' : String(member.number));
+  const [numberError, setNumberError] = useState('');
+  const [link, setLink] = useState(member.avatar.startsWith('https://') ? member.avatar : '');
+  const [photoError, setPhotoError] = useState('');
+  const [uploading, setUploading] = useState(false);
   const thisMonth = monthKey();
   const paidThisMonth = (state.fund.payments[thisMonth] || []).includes(member.id);
   const paidMonths = Object.keys(state.fund.payments).filter((m) => state.fund.payments[m].includes(member.id)).sort().reverse();
   const matchesPlayed = state.matches.filter((m) => m.teams.some((t) => t.includes(member.id))).length;
+  const sameNumber = member.number !== null ? state.members.find((m) => m.id !== member.id && m.number === member.number) : undefined;
 
   useEffect(() => {
     setName(member.name);
-    setAvatar(member.avatar);
+    setNumber(member.number === null ? '' : String(member.number));
+    setLink(member.avatar.startsWith('https://') ? member.avatar : '');
   }, [member]);
 
   useEffect(() => {
@@ -49,14 +56,47 @@ const MemberDetail = ({ member, state, isAdmin, fundUnlocked, onChange, onToggle
     else setName(member.name);
   };
 
-  const saveAvatar = () => {
-    const url = avatar.trim();
-    if (url && !/^https:\/\//i.test(url)) {
-      setAvatarError('Link ảnh phải bắt đầu bằng https://');
+  const saveNumber = () => {
+    const raw = number.trim();
+    if (!raw) {
+      setNumberError('');
+      if (member.number !== null) onChange({ ...member, number: null });
       return;
     }
-    setAvatarError('');
-    if (url !== member.avatar) onChange({ ...member, avatar: url });
+    const value = Number(raw);
+    if (!Number.isInteger(value) || value < 0 || value > 99) {
+      setNumberError('Số áo từ 0 đến 99.');
+      return;
+    }
+    setNumberError('');
+    if (value !== member.number) onChange({ ...member, number: value });
+  };
+
+  const saveLink = () => {
+    const url = link.trim();
+    if (url && !/^https:\/\//i.test(url)) {
+      setPhotoError('Link ảnh phải bắt đầu bằng https://');
+      return;
+    }
+    setPhotoError('');
+    if (url && url !== member.avatar) onChange({ ...member, avatar: url });
+  };
+
+  const onPickFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    setPhotoError('');
+    setUploading(true);
+    try {
+      const photo = await resizePhoto(file);
+      const avatar = await uploadAvatar(member.id, photo);
+      onChange({ ...member, avatar });
+    } catch (err) {
+      setPhotoError(err instanceof Error ? err.message : 'Không tải ảnh lên được.');
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -65,8 +105,13 @@ const MemberDetail = ({ member, state, isAdmin, fundUnlocked, onChange, onToggle
         <button type="button" className="sc-close" onClick={onClose} aria-label="Đóng"><i className="bx bx-x"></i></button>
 
         <div className="sc-detail-head">
-          <Avatar member={member} size={88} />
-          <div>
+          {isAdmin ? (
+            <button type="button" className="sc-photo-btn" onClick={() => fileRef.current?.click()} disabled={uploading} aria-label="Đổi ảnh đại diện">
+              <Avatar member={member} size={88} />
+              <span className="sc-photo-badge" aria-hidden="true"><i className={`bx ${uploading ? 'bx-loader-alt bx-spin' : 'bx-camera'}`}></i></span>
+            </button>
+          ) : <Avatar member={member} size={88} />}
+          <div className="sc-detail-id">
             {isAdmin ? (
               <input id="sc-detail-name" className="sc-name-input" value={name} maxLength={60}
                 onChange={(e) => setName(e.target.value)} onBlur={saveName}
@@ -74,16 +119,38 @@ const MemberDetail = ({ member, state, isAdmin, fundUnlocked, onChange, onToggle
             ) : (
               <h2 id="sc-detail-name">{member.name}</h2>
             )}
-            <span className={`sc-role ${member.role}`}>{ROLE_LABEL[member.role]}</span>
+            {isAdmin ? (
+              <label className="sc-number-field">
+                <span>Số áo</span>
+                <input inputMode="numeric" maxLength={2} value={number} placeholder="--"
+                  onChange={(e) => { setNumber(e.target.value.replace(/[^\d]/g, '')); setNumberError(''); }}
+                  onBlur={saveNumber} onKeyDown={(e) => e.key === 'Enter' && (e.target as HTMLInputElement).blur()} />
+              </label>
+            ) : (
+              <span className="sc-shirt big">{member.number ?? '--'}</span>
+            )}
           </div>
+        </div>
+        {numberError && <small className="sc-error" role="alert">{numberError}</small>}
+        {!numberError && sameNumber && <small className="sc-warn">Số {member.number} đang trùng với {sameNumber.name}.</small>}
+
+        <div className="sc-tier-picker">
+          <span className="sc-label">Tier (năng lực)</span>
+          {isAdmin ? (
+            <div className="sc-segment" role="radiogroup" aria-label="Tier">
+              {[5, 4, 3, 2, 1].map((t) => (
+                <button key={t} type="button" role="radio" aria-checked={member.tier === t}
+                  className={`t${t}${member.tier === t ? ' on' : ''}`} onClick={() => member.tier !== t && onChange({ ...member, tier: t })}>
+                  <b>{TIERS[t].label}</b><small>{TIERS[t].name}</small>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="sc-tier-static"><b className={`sc-tier big t${member.tier}`}>{TIERS[member.tier].label}</b><span>{TIERS[member.tier].name}</span></div>
+          )}
         </div>
 
         <div className="sc-detail-grid">
-          <div className="sc-stat">
-            <small>Tier (năng lực)</small>
-            <b className={`sc-tier big t${member.tier}`}>{TIERS[member.tier].label}</b>
-            <span>{TIERS[member.tier].name}</span>
-          </div>
           <div className="sc-stat">
             <small>Bàn thắng</small>
             <b>{member.goals}</b>
@@ -107,23 +174,27 @@ const MemberDetail = ({ member, state, isAdmin, fundUnlocked, onChange, onToggle
 
         {isAdmin && (
           <div className="sc-admin-fields">
-            <label>
-              <span>Tier</span>
-              <select value={member.tier} onChange={(e) => onChange({ ...member, tier: Number(e.target.value) })}>
-                {[5, 4, 3, 2, 1].map((t) => <option key={t} value={t}>{TIERS[t].label} - {TIERS[t].name}</option>)}
-              </select>
-            </label>
-            <label>
-              <span>Vai trò</span>
-              <select value={member.role} onChange={(e) => onChange({ ...member, role: e.target.value as Role })}>
-                {(Object.keys(ROLE_LABEL) as Role[]).map((r) => <option key={r} value={r}>{ROLE_LABEL[r]}</option>)}
-              </select>
-            </label>
-            <label className="sc-span-2">
-              <span>Link ảnh đại diện (tùy chọn)</span>
-              <input value={avatar} onChange={(e) => { setAvatar(e.target.value); setAvatarError(''); }} onBlur={saveAvatar} placeholder="https://..." maxLength={400} />
-              {avatarError && <small className="sc-error" role="alert">{avatarError}</small>}
-            </label>
+            <div className="sc-span-2 sc-photo-field">
+              <span className="sc-label">Ảnh đại diện</span>
+              <div className="sc-row-gap">
+                <button type="button" className="sc-btn small" onClick={() => fileRef.current?.click()} disabled={uploading}>
+                  <i className={`bx ${uploading ? 'bx-loader-alt bx-spin' : 'bx-image-add'}`} aria-hidden="true"></i>
+                  {uploading ? 'Đang tải lên' : 'Chọn ảnh từ máy'}
+                </button>
+                {member.avatar && (
+                  <button type="button" className="sc-btn ghost small" disabled={uploading}
+                    onClick={() => { setLink(''); setPhotoError(''); onChange({ ...member, avatar: '' }); }}>
+                    <i className="bx bx-trash" aria-hidden="true"></i>Xóa ảnh
+                  </button>
+                )}
+              </div>
+              <input ref={fileRef} type="file" accept="image/*" hidden onChange={onPickFile} />
+              <label className="sc-link-field">
+                <span>Hoặc dán link ảnh</span>
+                <input value={link} onChange={(e) => { setLink(e.target.value); setPhotoError(''); }} onBlur={saveLink} placeholder="https://..." maxLength={400} />
+              </label>
+              {photoError && <small className="sc-error" role="alert">{photoError}</small>}
+            </div>
             {fundUnlocked ? (
               <button type="button" className={`sc-btn ${paidThisMonth ? 'ghost' : ''} sc-span-2`} onClick={() => onTogglePaid(member.id, thisMonth)}>
                 <i className={`bx ${paidThisMonth ? 'bx-undo' : 'bx-check'}`} aria-hidden="true"></i>

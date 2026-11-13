@@ -1,13 +1,12 @@
-export type Role = 'captain' | 'vice' | 'member';
-
 export interface Member {
   id: string;
   name: string;
-  role: Role;
+  /** Shirt number 0-99, null when not set. */
+  number: number | null;
   /** 1 (D) to 5 (S). */
   tier: number;
   goals: number;
-  /** Optional https image URL; initials are shown when empty. */
+  /** https image URL or an uploaded photo (/api/soccer-avatar?...); initials when empty. */
   avatar: string;
 }
 

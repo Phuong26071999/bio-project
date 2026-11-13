@@ -17,7 +17,6 @@ const seed = require('../../src/soccer/seed.json');
 const KEY = 'soccer:state';
 const LOCAL_FILE = path.join(__dirname, '..', '..', '.data', 'soccer.json');
 
-const ROLES = ['captain', 'vice', 'member'];
 const LIMITS = { members: 40, months: 36, expenses: 300, matches: 200, teams: 4 };
 
 class ValidationError extends Error {}
@@ -48,10 +47,19 @@ function id(v, field) {
   return s;
 }
 
+// Uploaded photos are served by /api/soccer-avatar (see saveAvatar below).
+const UPLOADED_AVATAR = /^\/api\/soccer-avatar\?id=[a-z0-9-]+&v=\d{1,15}$/;
+
 function avatarUrl(v, field) {
   const s = str(v, 400, field, { optional: true });
-  if (s && !/^https:\/\//i.test(s)) fail(`${field} must be an https URL`);
+  if (s && !/^https:\/\//i.test(s) && !UPLOADED_AVATAR.test(s)) fail(`${field} must be an https URL or an uploaded photo`);
   return s;
+}
+
+/** Shirt number 0-99, or null when not set. */
+function shirtNumber(v, field) {
+  if (v === undefined || v === null || v === '') return null;
+  return int(v, 0, 99, field);
 }
 
 /** Returns a clean copy of the client's state or throws ValidationError. */
@@ -66,11 +74,11 @@ function validateState(input) {
     const memberId = id(m.id, `members[${i}].id`);
     if (memberIds.has(memberId)) fail(`members[${i}].id is duplicated`);
     memberIds.add(memberId);
-    if (!ROLES.includes(m.role)) fail(`members[${i}].role is invalid`);
+    // Older saves may still carry a "role" field; it is no longer used and is dropped here.
     return {
       id: memberId,
       name: str(m.name, 60, `members[${i}].name`),
-      role: m.role,
+      number: shirtNumber(m.number, `members[${i}].number`),
       tier: int(m.tier, 1, 5, `members[${i}].tier`),
       goals: int(m.goals, 0, 9999, `members[${i}].goals`),
       avatar: avatarUrl(m.avatar, `members[${i}].avatar`),
@@ -155,7 +163,47 @@ async function loadState(env = process.env) {
   let raw = null;
   if (backend && backend.type === 'redis') raw = await redisCommand(backend.redis, ['GET', KEY]);
   if (backend && backend.type === 'file' && fs.existsSync(LOCAL_FILE)) raw = fs.readFileSync(LOCAL_FILE, 'utf8');
-  return raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(seed));
+  const state = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(seed));
+  // Older saves: drop the removed "role" field and default the shirt number.
+  state.members = (state.members || []).map(({ role, ...m }) => ({ ...m, number: m.number ?? null }));
+  return state;
+}
+
+/* ---------- uploaded profile photos (kept out of the main state) ---------- */
+
+const AVATAR_KEY = (memberId) => `soccer:avatar:${memberId}`;
+const AVATAR_DIR = path.join(path.dirname(LOCAL_FILE), 'avatars');
+const MAX_AVATAR_BYTES = 80 * 1024;
+const AVATAR_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
+/** Checks a "data:image/...;base64,..." string and returns { type, data }. */
+function parseAvatarDataUrl(value) {
+  const match = typeof value === 'string' && value.match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/);
+  if (!match || !AVATAR_TYPES.includes(match[1])) fail('photo must be a JPEG, PNG or WebP image');
+  const bytes = Buffer.from(match[2], 'base64');
+  if (!bytes.length || bytes.length > MAX_AVATAR_BYTES) fail('photo is too large');
+  return { type: match[1], data: match[2] };
+}
+
+async function saveAvatar(memberId, photo, env = process.env) {
+  const backend = getBackend(env);
+  if (!backend) throw new Error('No storage configured');
+  const json = JSON.stringify(photo);
+  if (backend.type === 'redis') {
+    await redisCommand(backend.redis, ['SET', AVATAR_KEY(memberId), json]);
+  } else {
+    fs.mkdirSync(AVATAR_DIR, { recursive: true });
+    fs.writeFileSync(path.join(AVATAR_DIR, `${memberId}.json`), json);
+  }
+}
+
+async function loadAvatar(memberId, env = process.env) {
+  const backend = getBackend(env);
+  let raw = null;
+  if (backend && backend.type === 'redis') raw = await redisCommand(backend.redis, ['GET', AVATAR_KEY(memberId)]);
+  const file = path.join(AVATAR_DIR, `${memberId}.json`);
+  if (backend && backend.type === 'file' && fs.existsSync(file)) raw = fs.readFileSync(file, 'utf8');
+  return raw ? JSON.parse(raw) : null;
 }
 
 async function saveState(state, env = process.env) {
@@ -170,4 +218,7 @@ async function saveState(state, env = process.env) {
   }
 }
 
-module.exports = { ValidationError, validateState, loadState, saveState, getBackend };
+module.exports = {
+  ValidationError, validateState, loadState, saveState, getBackend,
+  parseAvatarDataUrl, saveAvatar, loadAvatar,
+};

@@ -63,6 +63,26 @@ export const fetchState = () => request<{ state: SoccerState; writable: boolean;
 
 export const verifyPin = (pin: string) => request<{ ok: true }>('POST', { action: 'verify' }, pin);
 
+/** Uploads a resized photo; returns the URL to store in member.avatar. */
+export async function uploadAvatar(memberId: string, photo: string): Promise<string> {
+  let response: Response;
+  try {
+    response = await fetch('/api/soccer-avatar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ id: memberId, photo }),
+    });
+  } catch {
+    throw new SoccerApiError(0, 'network', 'Không kết nối được máy chủ. Kiểm tra mạng và thử lại.');
+  }
+  const data = await response.json().catch(() => null);
+  if (!response.ok || !data?.avatar) {
+    const code = data?.error?.code || 'unavailable';
+    throw new SoccerApiError(response.status, code, MESSAGES[code] || 'Không tải ảnh lên được. Thử lại sau.');
+  }
+  return data.avatar as string;
+}
+
 /** The PIN is only checked by the server when the fund changed. */
 export async function saveState(state: SoccerState, version: number, pin: string): Promise<SoccerState> {
   const { members, fund, matches } = state;

@@ -1,7 +1,7 @@
 import { splitTeams, tierCounts } from './teamSplit';
 import { Member } from './types';
 
-const player = (id: string, tier: number): Member => ({ id, name: id, role: 'member', tier, goals: 0, avatar: '' });
+const player = (id: string, tier: number): Member => ({ id, name: id, number: null, tier, goals: 0, avatar: '' });
 
 // Deterministic RNG so the test is stable.
 const seeded = (seed: number) => () => {

@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Member, SoccerState } from '../types';
-import { ROLE_LABEL, TIERS, monthKey, slugify, uniqueId } from '../utils';
+import { TIERS, monthKey, slugify, uniqueId } from '../utils';
 import Avatar from './Avatar';
 
 interface Props {
@@ -10,23 +10,24 @@ interface Props {
   onAdd: (member: Member) => void;
 }
 
-type SortKey = 'role' | 'name' | 'tier' | 'goals';
-const ROLE_ORDER = { captain: 0, vice: 1, member: 2 };
+type SortKey = 'number' | 'name' | 'tier' | 'goals';
 
 const MembersTab = ({ state, isAdmin, onOpen, onAdd }: Props) => {
   const [query, setQuery] = useState('');
-  const [sort, setSort] = useState<SortKey>('role');
+  const [sort, setSort] = useState<SortKey>('number');
   const [newName, setNewName] = useState('');
   const paidNow = new Set(state.fund.payments[monthKey()] || []);
 
   const list = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const filtered = state.members.filter((m) => m.name.toLowerCase().includes(q));
+    const filtered = state.members.filter((m) => m.name.toLowerCase().includes(q) || String(m.number ?? '') === q);
+    const byName = (a: Member, b: Member) => a.name.localeCompare(b.name, 'vi');
     const by: Record<SortKey, (a: Member, b: Member) => number> = {
-      role: (a, b) => ROLE_ORDER[a.role] - ROLE_ORDER[b.role],
-      name: (a, b) => a.name.localeCompare(b.name, 'vi'),
-      tier: (a, b) => b.tier - a.tier || a.name.localeCompare(b.name, 'vi'),
-      goals: (a, b) => b.goals - a.goals || a.name.localeCompare(b.name, 'vi'),
+      // Players without a number go last.
+      number: (a, b) => (a.number ?? 1000) - (b.number ?? 1000) || byName(a, b),
+      name: byName,
+      tier: (a, b) => b.tier - a.tier || byName(a, b),
+      goals: (a, b) => b.goals - a.goals || byName(a, b),
     };
     return [...filtered].sort(by[sort]);
   }, [state.members, query, sort]);
@@ -38,7 +39,7 @@ const MembersTab = ({ state, isAdmin, onOpen, onAdd }: Props) => {
     const name = newName.trim();
     if (!name) return;
     const id = uniqueId(slugify(name), new Set(state.members.map((m) => m.id)));
-    onAdd({ id, name, role: 'member', tier: 3, goals: 0, avatar: '' });
+    onAdd({ id, name, number: null, tier: 3, goals: 0, avatar: '' });
     setNewName('');
   };
 
@@ -63,12 +64,12 @@ const MembersTab = ({ state, isAdmin, onOpen, onAdd }: Props) => {
       <div className="sc-toolbar">
         <label className="sc-search">
           <i className="bx bx-search" aria-hidden="true"></i>
-          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Tìm thành viên" aria-label="Tìm thành viên" />
+          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Tìm tên hoặc số áo" aria-label="Tìm tên hoặc số áo" />
         </label>
         <label className="sc-select">
           <span>Sắp xếp</span>
           <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)}>
-            <option value="role">Vai trò</option>
+            <option value="number">Số áo</option>
             <option value="name">Tên</option>
             <option value="tier">Tier cao nhất</option>
             <option value="goals">Nhiều bàn nhất</option>
@@ -79,14 +80,13 @@ const MembersTab = ({ state, isAdmin, onOpen, onAdd }: Props) => {
       <div className="sc-members">
         {list.map((m) => (
           <button key={m.id} type="button" className="sc-member" onClick={() => onOpen(m)}
-            aria-label={`${m.name}, ${ROLE_LABEL[m.role]}, tier ${TIERS[m.tier].label}, ${m.goals} bàn, ${paidNow.has(m.id) ? 'đã đóng quỹ' : 'chưa đóng quỹ'}`}>
+            aria-label={`${m.name}${m.number !== null ? `, số áo ${m.number}` : ''}, tier ${TIERS[m.tier].label}, ${m.goals} bàn, ${paidNow.has(m.id) ? 'đã đóng quỹ' : 'chưa đóng quỹ'}`}>
             <span className="sc-card-top">
               <span className={`sc-rating t${m.tier}`}><b>{TIERS[m.tier].label}</b><small>{TIERS[m.tier].name}</small></span>
-              {m.role !== 'member' && <span className={`sc-armband ${m.role}`} title={ROLE_LABEL[m.role]}>{m.role === 'captain' ? 'C' : 'VC'}</span>}
+              <span className={`sc-shirt${m.number === null ? ' empty' : ''}`} title="Số áo">{m.number ?? '--'}</span>
             </span>
             <span className="sc-card-avatar"><Avatar member={m} size={72} /></span>
             <span className="sc-card-name">{m.name}</span>
-            <span className="sc-card-role">{ROLE_LABEL[m.role]}</span>
             <span className="sc-card-stats">
               <span title="Số bàn thắng"><i className="bx bx-football" aria-hidden="true"></i><b>{m.goals}</b> bàn</span>
               <span className={`sc-paid${paidNow.has(m.id) ? ' yes' : ''}`}>
