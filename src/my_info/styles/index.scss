@@ -1,5 +1,11 @@
 @import "./variables";
 
+// Scroll-reveal starts elements shifted sideways; without this they widen the
+// mobile layout viewport until revealed. `clip` (unlike hidden) creates no scroll container.
+.boxLayout {
+    overflow-x: clip;
+}
+
 section {
     min-height: 100vh;
     padding: 9rem 9% 2rem;

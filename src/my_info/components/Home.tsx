@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import homeImg from '../../images/about-2.png';
+import homeImg from '../../images/about-2.jpg';
 import Typed from 'typed.js';
 import dataProfile from '../mockData/dataProfile.json';
 import '../styles/home.scss';
@@ -28,15 +28,16 @@ const Header = () => {
             <h3>And I'm a <span className='multiple-text'></span></h3>
             <p>{dataProfile.summary}</p>
             <div className="social-media">
-                <a href="https://www.facebook.com/Nemo07/" target={'_blank'} rel="noreferrer" ><i className='bx bxl-facebook' ></i></a>
-                <a href="https://github.com/Phuong26071999" target={'_blank'}  rel="noreferrer"  ><i className='bx bxl-github'></i></a>
-                <a href="https://www.instagram.com/ctain_nemo/" target={'_blank'} rel="noreferrer" ><i className='bx bxl-instagram-alt' ></i></a>
-                <a href="https://www.linkedin.com/in/truonghaihoangphuong/" target={'_blank'} rel="noreferrer" ><i className='bx bxl-linkedin' ></i></a>
+                {dataProfile.socials.map((s) => (
+                  <a key={s.link} href={s.link} target="_blank" rel="noreferrer" aria-label={s.name} title={s.name}>
+                    <i className={s.icon} aria-hidden="true"></i>
+                  </a>
+                ))}
             </div>
             <a href={dataProfile.cv.url} download={dataProfile.cv.fileName} className='btn'>Download CV</a>
         </div>
         <div className="home-img">
-          <img src={homeImg} alt="" />
+          <img src={homeImg} alt={`Portrait of ${dataProfile.name}`} width={1024} height={1536} />
         </div>
     </section>
   );

@@ -105,11 +105,20 @@
 
 #menu-icon {
     font-size: 3.6rem;
+    line-height: 1;
     color: $text-color;
+    background: none;
+    cursor: pointer;
     display: none;
     transition: .3s ease;
 
     &:hover { color: $main-color; }
+
+    &:focus-visible {
+        outline: .2rem solid $main-color;
+        outline-offset: .4rem;
+        border-radius: .6rem;
+    }
 }
 
 @media (max-width: 768px) {

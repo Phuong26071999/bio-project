@@ -46,8 +46,8 @@ const Contact = () => {
 
       <div className="contact-social">
         {socials.map((s) => (
-          <a key={s.link} href={s.link} target="_blank" rel="noreferrer">
-            <i className={s.icon}></i>
+          <a key={s.link} href={s.link} target="_blank" rel="noreferrer" aria-label={s.name} title={s.name}>
+            <i className={s.icon} aria-hidden="true"></i>
           </a>
         ))}
       </div>
