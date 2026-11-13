@@ -3,9 +3,6 @@
   "functions": {
     "api/chat.js": {
       "maxDuration": 30
-    },
-    "api/soccer.js": {
-      "maxDuration": 10
     }
   },
   "rewrites": [
