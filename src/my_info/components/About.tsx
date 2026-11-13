@@ -9,7 +9,7 @@ const About = () => {
   return (
     <section className="about" id="about">
       <div className="about-img">
-        <img src={aboutImg} alt="img-about" />
+        <img src={aboutImg} alt="Hoang Phuong" loading="lazy" />
       </div>
       <div className="about-content">
         <h2 className="heading">

@@ -12,18 +12,20 @@ import './styles/index.scss';
 
 const MyInfo = () => {
   useEffect(() => {
+    // Content stays fully visible for visitors who prefer reduced motion.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     ScrollReveal({
       // reset: true,
-      distance: '80px',
-      duration: 2000,
-      delay: 200,
+      distance: '40px',
+      duration: 800,
+      delay: 100,
     });
     ScrollReveal().reveal('.home-content, .heading', { origin: 'top' });
     ScrollReveal().reveal('.home-img, .services-container, .portfolio-box', { origin: 'bottom' });
-    // contact reveals in order: heading (200) -> mascot -> cards -> socials
-    ScrollReveal().reveal('.contact-mascot', { origin: 'bottom', delay: 400 });
-    ScrollReveal().reveal('.contact-info', { origin: 'bottom', delay: 600 });
-    ScrollReveal().reveal('.contact-social', { origin: 'bottom', delay: 800 });
+    // contact reveals in order: heading (100) -> mascot -> cards -> socials
+    ScrollReveal().reveal('.contact-mascot', { origin: 'bottom', delay: 200 });
+    ScrollReveal().reveal('.contact-info', { origin: 'bottom', delay: 300 });
+    ScrollReveal().reveal('.contact-social', { origin: 'bottom', delay: 400 });
     ScrollReveal().reveal('.home-content h1, .about-img', { origin: 'left' });
     ScrollReveal().reveal('.home-content p, .about-content', { origin: 'right' });
   }, []);
