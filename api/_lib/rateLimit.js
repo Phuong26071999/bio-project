@@ -26,11 +26,42 @@ function getLimits(env = process.env) {
   };
 }
 
+const REST_PAIRS = [
+  ['UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN'],
+  ['KV_REST_API_URL', 'KV_REST_API_TOKEN'],
+];
+
+/**
+ * Finds Upstash REST credentials. Accepts Upstash's own names, the names the
+ * Vercel Marketplace integration injects, the same names with a custom prefix
+ * (e.g. STORAGE_KV_REST_API_URL), or an Upstash REDIS_URL / KV_URL, whose
+ * password doubles as the REST token.
+ */
 function getRedisConfig(env = process.env) {
-  // Upstash's own names, or the names the Vercel Marketplace integration injects.
-  const url = env.UPSTASH_REDIS_REST_URL || env.KV_REST_API_URL;
-  const token = env.UPSTASH_REDIS_REST_TOKEN || env.KV_REST_API_TOKEN;
-  return url && token ? { url: url.replace(/\/+$/, ''), token } : null;
+  const keys = Object.keys(env);
+  for (const [urlName, tokenName] of REST_PAIRS) {
+    const urlKey = keys.find((k) => k === urlName || k.endsWith(`_${urlName}`));
+    if (!urlKey) continue;
+    const prefix = urlKey.slice(0, urlKey.length - urlName.length);
+    const url = env[urlKey];
+    const token = env[`${prefix}${tokenName}`];
+    if (url && token) return { url: url.replace(/\/+$/, ''), token };
+  }
+  const connKey = keys.find((k) => /(^|_)(REDIS_URL|KV_URL)$/.test(k) && /upstash\.io/i.test(env[k] || ''));
+  if (connKey) {
+    try {
+      const parsed = new URL(env[connKey]);
+      if (parsed.password) return { url: `https://${parsed.hostname}`, token: decodeURIComponent(parsed.password) };
+    } catch (err) {
+      // not a URL; ignore
+    }
+  }
+  return null;
+}
+
+/** Names (never values) of env vars that look Redis-related; used for setup hints. */
+function redisEnvNames(env = process.env) {
+  return Object.keys(env).filter((k) => /REDIS|(^|_)KV_/.test(k)).sort();
 }
 
 /** Hash the IP so raw visitor addresses are never stored. */
@@ -160,4 +191,4 @@ function resetMemoryRateLimit() {
   memoryCounters.clear();
 }
 
-module.exports = { checkRateLimit, hitLimit, getLimits, getRedisConfig, resetMemoryRateLimit };
+module.exports = { checkRateLimit, hitLimit, getLimits, getRedisConfig, redisEnvNames, resetMemoryRateLimit };

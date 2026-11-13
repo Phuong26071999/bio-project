@@ -15,7 +15,7 @@
 
 const crypto = require('crypto');
 const { RequestError, send, getClientIp, readBody, assertJsonRequest } = require('./_lib/http');
-const { hitLimit } = require('./_lib/rateLimit');
+const { hitLimit, redisEnvNames } = require('./_lib/rateLimit');
 const { ValidationError, validateState, loadState, saveState, getBackend } = require('./_lib/soccerStore');
 
 const MAX_BODY_BYTES = 128 * 1024;
@@ -75,8 +75,12 @@ async function handler(req, res) {
   try {
     if (req.method === 'GET') {
       const state = await loadState();
-      const writable = Boolean(getBackend());
-      return send(res, 200, { state, writable, fundPin: writable && Boolean(adminPin()) });
+      const backend = getBackend();
+      const writable = Boolean(backend);
+      const body = { state, writable, fundPin: writable && Boolean(adminPin()), storage: backend ? backend.type : 'none' };
+      // Setup hint when storage is missing: names only, never values.
+      if (!backend) body.redisEnvFound = redisEnvNames();
+      return send(res, 200, body);
     }
 
     if (req.method !== 'POST' && req.method !== 'PUT') {
