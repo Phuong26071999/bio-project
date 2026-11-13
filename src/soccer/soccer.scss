@@ -1,0 +1,391 @@
+// /soccer: "night match" look. Pitch greens + chalk lines, one accent (volt).
+// Team 1 wears volt, team 2 wears white bibs. Dark theme only, by design.
+$bg: #0b1912;
+$surface: #11241a;
+$surface-2: #173022;
+$line: rgba(236, 246, 238, .1);
+$chalk: rgba(236, 246, 238, .55);
+$text: #ecf6ee;
+$soft: #a2b7a8;
+$accent: #c8f031;
+$accent-ink: #142006;
+$bib: #f2f5f2;
+$warn: #ffb547;
+$danger: #ff6b5b;
+$stripe-a: #14412a;
+$stripe-b: #17492f;
+$display: 'Barlow Condensed', 'Arial Narrow', system-ui, sans-serif;
+$body: 'Barlow', system-ui, sans-serif;
+$r: 1.4rem;      // cards and panels
+$r-sm: 1rem;     // inputs, small tiles
+$ease: cubic-bezier(.16, 1, .3, 1);
+
+.sc-page {
+    min-height: 100dvh;
+    background:
+        radial-gradient(70rem 40rem at 50% -10%, rgba(200, 240, 49, .07), transparent 70%),
+        $bg;
+    color: $text;
+    font-family: $body;
+    font-size: 1.55rem;
+    line-height: 1.55;
+    padding-bottom: 8rem;
+
+    input, select, button { font: inherit; color: inherit; }
+    input, select {
+        background: rgba(0, 0, 0, .22);
+        border: .1rem solid $line;
+        border-radius: $r-sm;
+        padding: .9rem 1.2rem;
+        min-width: 0;
+        transition: border-color .2s;
+        &:focus { outline: none; border-color: $accent; }
+    }
+    input::placeholder { color: rgba(236, 246, 238, .45); }
+    select option { background: $surface; }
+    input[type="month"], input[type="date"], input[type="datetime-local"] { color-scheme: dark; }
+    button { cursor: pointer; background: none; border: none; }
+    :focus-visible { outline: .2rem solid $accent; outline-offset: .2rem; }
+    // The portfolio's global `section { min-height: 100vh; padding: 9rem 9% }` must not apply here.
+    section { min-height: 0; padding: 0; }
+}
+
+.sc-wrap { max-width: 1180px; margin: 0 auto; padding: 0 2.4rem; }
+.sc-center { min-height: 70vh; display: grid; place-items: center; text-align: center; }
+.sc-muted { color: $soft; }
+.sc-grow { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sc-row-gap { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+.sc-error { color: $danger; display: block; margin-top: .6rem; }
+.sc-empty { color: $soft; padding: 2.4rem; text-align: center; border: .1rem dashed $line; border-radius: $r; }
+.sc-ok { color: $accent; font-size: 2rem; }
+.sc-h2 { font-family: $display; font-weight: 800; font-size: 3.2rem; line-height: 1; text-transform: uppercase; letter-spacing: .01em; }
+.sc-section-title { font-family: $display; font-weight: 700; font-size: 2.2rem; text-transform: uppercase; margin: 3.2rem 0 1.2rem; }
+
+/* buttons + small badges */
+.sc-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .6rem; white-space: nowrap;
+    padding: 1.05rem 2rem; border-radius: 99rem;
+    font-family: $display; font-weight: 700; font-size: 1.7rem; letter-spacing: .02em; text-transform: uppercase;
+    background: $accent !important; color: $accent-ink !important;
+    transition: transform .2s $ease, background .2s, opacity .2s;
+    &:hover:not(:disabled) { background: #d6f75a !important; }
+    &:active:not(:disabled) { transform: scale(.97); }
+    &:disabled { opacity: .4; cursor: not-allowed; }
+    &.ghost { background: transparent !important; color: $text !important; box-shadow: inset 0 0 0 .15rem $line; }
+    &.ghost:hover:not(:disabled) { box-shadow: inset 0 0 0 .15rem $chalk; }
+    &.small { padding: .65rem 1.4rem; font-size: 1.45rem; }
+    i { font-size: 1.9rem; }
+}
+.sc-icon-btn { width: 3.6rem; height: 3.6rem; border-radius: 50%; display: grid; place-items: center; color: $soft; font-size: 1.9rem;
+    &:hover { color: $danger; background: rgba(255, 107, 91, .1); } }
+.sc-link-danger { color: $danger !important; display: inline-flex; align-items: center; gap: .4rem; font-size: 1.45rem; margin-top: 1.6rem;
+    &:hover { text-decoration: underline; } }
+.sc-chip { display: inline-block; font-size: 1.25rem; font-weight: 600; padding: .25rem 1rem; border-radius: 99rem; background: rgba(236, 246, 238, .08);
+    &.ok { background: rgba(200, 240, 49, .14); color: $accent; } }
+.sc-chips { display: flex; flex-wrap: wrap; gap: .6rem; }
+
+.sc-avatar {
+    flex-shrink: 0; border-radius: 50%; object-fit: cover;
+    display: inline-grid; place-items: center; font-family: $display; font-weight: 800; color: #0b1912; letter-spacing: .01em;
+}
+
+/* tier (S..D) badges, used everywhere */
+.sc-tier {
+    display: inline-grid; place-items: center; min-width: 2.4rem; height: 2.4rem; padding: 0 .5rem;
+    border-radius: .7rem; font-family: $display; font-size: 1.5rem; font-weight: 800; line-height: 1;
+    &.t5 { background: $accent; color: $accent-ink; }
+    &.t4 { background: #8fe0a8; color: #06240f; }
+    &.t3 { background: #e9eee9; color: #12261a; }
+    &.t2 { background: #9fb3a5; color: #0f1f15; }
+    &.t1 { background: #4d6455; color: #ecf6ee; }
+    &.big { min-width: 5.6rem; height: 5.6rem; font-size: 3.4rem; border-radius: 1.2rem; }
+}
+
+/* ---------- header: title + scoreboard + tabs ---------- */
+.sc-header {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(11, 25, 18, .9); backdrop-filter: blur(1.2rem);
+    border-bottom: .1rem solid $line;
+}
+.sc-header-row { display: flex; align-items: center; gap: 1.6rem; padding-top: 1.4rem; padding-bottom: 1.2rem; }
+.sc-back { width: 4.2rem; height: 4.2rem; border-radius: 50%; display: grid; place-items: center; font-size: 2.2rem; color: $text; box-shadow: inset 0 0 0 .15rem $line; flex-shrink: 0;
+    &:hover { box-shadow: inset 0 0 0 .15rem $accent; color: $accent; } }
+.sc-title { flex: 1; min-width: 0;
+    h1 { font-family: $display; font-weight: 800; font-size: 3.4rem; line-height: 1; text-transform: uppercase; display: flex; align-items: center; gap: .8rem;
+        i { color: $accent; font-size: 3rem; } } }
+.sc-scoreboard {
+    display: flex; border-radius: $r-sm; overflow: hidden; background: #050d09; box-shadow: inset 0 0 0 .1rem $line; flex-shrink: 0;
+    > div { padding: .6rem 1.6rem; text-align: center; }
+    > div + div { box-shadow: inset .1rem 0 0 $line; }
+    dt { font-size: 1.1rem; color: $soft; text-transform: uppercase; letter-spacing: .08em; font-weight: 600; }
+    dd { font-family: $display; font-weight: 800; font-size: 2.6rem; line-height: 1.05; color: $accent; font-variant-numeric: tabular-nums;
+        small { font-size: 1.6rem; color: $soft; } }
+}
+.sc-admin { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
+.sc-saving { color: $soft; font-size: 1.35rem; display: inline-flex; align-items: center; gap: .4rem; }
+.sc-tabs { display: flex; gap: .2rem; overflow-x: auto; scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+    button { position: relative; display: inline-flex; align-items: center; gap: .6rem; padding: 1rem 1.6rem 1.2rem; white-space: nowrap;
+        font-family: $display; font-weight: 700; font-size: 1.8rem; text-transform: uppercase; letter-spacing: .02em; color: $soft; transition: color .2s;
+        i { font-size: 2rem; }
+        &::after { content: ""; position: absolute; left: 1.2rem; right: 1.2rem; bottom: 0; height: .35rem; border-radius: .4rem .4rem 0 0; background: $accent; transform: scaleX(0); transition: transform .3s $ease; }
+        &:hover { color: $text; }
+        &.on { color: $text; &::after { transform: scaleX(1); } } } }
+.sc-wrap.sc-main { padding-top: 2.8rem; }
+
+/* ---------- shared surfaces ---------- */
+.sc-panel { background: $surface; box-shadow: inset 0 0 0 .1rem $line; border-radius: $r; padding: 2.2rem; margin-bottom: 1.6rem;
+    h3 { font-family: $display; font-weight: 700; font-size: 2rem; text-transform: uppercase; margin-bottom: 1.2rem;
+        small { color: $soft; font-weight: 600; margin-left: .4rem; } } }
+.sc-panel-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.2rem; h3 { margin: 0; } }
+.sc-stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1.2rem; margin-bottom: 1.6rem; }
+.sc-stat { background: $surface; box-shadow: inset 0 0 0 .1rem $line; border-radius: $r; padding: 1.6rem 1.8rem; display: flex; flex-direction: column; gap: .2rem; min-width: 0;
+    small { color: $soft; font-size: 1.3rem; font-weight: 600; }
+    b { font-family: $display; font-weight: 800; font-size: 2.8rem; line-height: 1.1; overflow-wrap: anywhere; font-variant-numeric: tabular-nums;
+        &.ok { color: $accent; } &.warn { color: $warn; } }
+    span { color: $soft; font-size: 1.3rem; }
+    &.highlight { background: $accent; box-shadow: none; small, span, b { color: $accent-ink; } } }
+.sc-progress { display: block; height: .6rem; border-radius: 1rem; background: rgba(236, 246, 238, .08); overflow: hidden; margin-top: .6rem;
+    span { display: block; height: 100%; background: $accent; border-radius: 1rem; transition: width .6s $ease; } }
+.sc-two { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; margin-bottom: 1.6rem; .sc-panel { margin: 0; } }
+.sc-select { display: inline-flex; align-items: center; gap: .8rem; color: $soft; font-size: 1.4rem; select, input { color: $text; } }
+
+/* ---------- members: player cards ---------- */
+.sc-scorers {
+    position: relative; overflow: hidden; border-radius: $r; padding: 2rem 2.2rem; margin-bottom: 2rem;
+    background: repeating-linear-gradient(90deg, $stripe-a 0 6rem, $stripe-b 6rem 12rem);
+    box-shadow: inset 0 0 0 .15rem rgba(236, 246, 238, .14);
+    h3 { font-family: $display; font-weight: 800; font-size: 2.2rem; text-transform: uppercase; margin-bottom: 1.2rem; display: flex; align-items: center; gap: .6rem; i { color: $accent; } }
+    ol { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+    li { display: flex; align-items: center; gap: 1rem; min-width: 0; padding: 1rem 1.2rem; border-radius: $r-sm; background: rgba(5, 13, 9, .45); }
+    li.p1 { box-shadow: inset 0 0 0 .15rem $accent; }
+    b { font-family: $display; font-weight: 800; font-size: 2.6rem; color: $accent; white-space: nowrap; small { font-size: 1.4rem; color: $soft; } }
+}
+.sc-rank { width: 2.6rem; height: 2.6rem; border-radius: 50%; background: rgba(236, 246, 238, .12); display: grid; place-items: center; font-family: $display; font-weight: 800; flex-shrink: 0; }
+.sc-toolbar { display: flex; gap: 1rem; margin-bottom: 1.8rem; flex-wrap: wrap; }
+.sc-search { flex: 1 1 24rem; position: relative;
+    i { position: absolute; left: 1.3rem; top: 50%; translate: 0 -50%; color: $soft; font-size: 1.9rem; }
+    input { width: 100%; padding-left: 4rem; } }
+.sc-members { display: grid; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); gap: 1.4rem; }
+.sc-member {
+    position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: .4rem;
+    padding: 1.4rem 1.4rem 1.6rem; border-radius: $r; overflow: hidden;
+    background: linear-gradient(180deg, $surface-2, $surface) !important;
+    box-shadow: inset 0 0 0 .1rem $line;
+    transition: transform .35s $ease, box-shadow .25s;
+    &::before { content: ""; position: absolute; inset: 0 0 auto; height: 9rem; background: repeating-linear-gradient(90deg, rgba(236, 246, 238, .035) 0 2.4rem, transparent 2.4rem 4.8rem); pointer-events: none; }
+    &:hover { transform: translateY(-.4rem); box-shadow: inset 0 0 0 .15rem rgba(200, 240, 49, .6); }
+    &:active { transform: translateY(-.1rem) scale(.99); }
+}
+.sc-card-top { position: relative; align-self: stretch; display: flex; justify-content: space-between; align-items: flex-start; }
+.sc-rating { display: flex; flex-direction: column; align-items: flex-start; line-height: 1;
+    b { font-family: $display; font-weight: 800; font-size: 3.4rem; }
+    small { font-size: 1.1rem; color: $soft; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+    &.t5 b { color: $accent; } &.t4 b { color: #8fe0a8; } &.t3 b { color: #e9eee9; } &.t2 b, &.t1 b { color: $soft; } }
+.sc-armband { font-family: $display; font-weight: 800; font-size: 1.4rem; padding: .25rem .8rem; border-radius: .5rem; background: $bib; color: $bg;
+    &.captain { background: $accent; color: $accent-ink; } }
+.sc-card-avatar { position: relative; margin-top: -1.2rem; padding: .3rem; border-radius: 50%; box-shadow: 0 0 0 .2rem rgba(236, 246, 238, .18); }
+.sc-card-name { font-family: $display; font-weight: 700; font-size: 2.1rem; line-height: 1.1; margin-top: .6rem; text-transform: uppercase; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sc-card-role { font-size: 1.25rem; color: $soft; }
+.sc-card-stats { align-self: stretch; display: flex; justify-content: space-between; gap: .8rem; margin-top: 1rem; padding-top: 1rem; box-shadow: inset 0 .1rem 0 $line; font-size: 1.3rem;
+    > span { display: inline-flex; align-items: center; gap: .3rem; }
+    b { font-family: $display; font-size: 1.8rem; } i { color: $accent; font-size: 1.7rem; } }
+.sc-paid { color: $warn; i { color: $warn !important; } &.yes { color: $accent; i { color: $accent !important; } } }
+.sc-inline-form { margin-top: 2rem;
+    label { display: block; color: $soft; font-size: 1.35rem; margin-bottom: .6rem; }
+    div { display: flex; gap: 1rem; input { flex: 1; } } }
+
+/* ---------- member dialog ---------- */
+.sc-overlay { position: fixed; inset: 0; z-index: 50; background: rgba(3, 9, 6, .72); display: grid; place-items: center; padding: 2rem; overflow-y: auto; animation: sc-fade .2s ease; }
+.sc-dialog { position: relative; width: min(56rem, 100%); max-height: calc(100dvh - 4rem); overflow-y: auto; background: $surface; box-shadow: inset 0 0 0 .1rem $line, 0 3rem 8rem rgba(0, 0, 0, .5); border-radius: 2rem; padding: 2.8rem; outline: none; animation: sc-pop .35s $ease;
+    &.small { width: min(40rem, 100%); h2 { font-family: $display; font-weight: 800; font-size: 2.8rem; text-transform: uppercase; margin-bottom: .6rem; } .sc-btn { width: 100%; margin-top: 1.6rem; } } }
+@keyframes sc-fade { from { opacity: 0; } }
+@keyframes sc-pop { from { opacity: 0; transform: translateY(1.6rem) scale(.98); } }
+.sc-close { position: absolute; top: 1.4rem; right: 1.4rem; width: 3.8rem; height: 3.8rem; border-radius: 50%; display: grid; place-items: center; font-size: 2.4rem; color: $soft; &:hover { background: rgba(236, 246, 238, .08); color: $text; } }
+.sc-detail-head { display: flex; align-items: center; gap: 1.8rem; margin: -2.8rem -2.8rem 2.2rem; padding: 2.8rem 6rem 2.2rem 2.8rem;
+    background: repeating-linear-gradient(90deg, $stripe-a 0 5rem, $stripe-b 5rem 10rem);
+    h2 { font-family: $display; font-weight: 800; font-size: 3rem; line-height: 1.05; text-transform: uppercase; }
+    > div { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: .6rem; } }
+.sc-name-input { font-family: $display !important; font-size: 2.6rem !important; font-weight: 800; text-transform: uppercase; width: 100%; padding: .3rem 1rem !important; background: rgba(5, 13, 9, .45) !important; }
+.sc-role { font-size: 1.25rem; font-weight: 700; padding: .3rem 1rem; border-radius: 99rem; background: rgba(236, 246, 238, .12);
+    &.captain { background: $accent; color: $accent-ink; }
+    &.vice { background: $bib; color: $bg; } }
+.sc-detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-bottom: 1.8rem; .sc-stat { background: rgba(5, 13, 9, .35); } }
+.sc-stepper { display: flex; gap: .6rem; margin-top: .4rem;
+    button { width: 4rem; height: 4rem; border-radius: $r-sm; box-shadow: inset 0 0 0 .15rem $line; font-size: 2.2rem; font-weight: 700;
+        &:hover:not(:disabled) { box-shadow: inset 0 0 0 .15rem $accent; color: $accent; }
+        &:disabled { opacity: .35; } } }
+.sc-admin-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; padding: 1.6rem; border-radius: $r; box-shadow: inset 0 0 0 .1rem $line; margin-bottom: 1.8rem;
+    label { display: flex; flex-direction: column; gap: .6rem; color: $soft; font-size: 1.35rem; input, select { color: $text; width: 100%; } }
+    p { display: flex; align-items: center; gap: .5rem; } }
+.sc-span-2 { grid-column: span 2; }
+.sc-history h3 { font-family: $display; font-weight: 700; font-size: 1.9rem; text-transform: uppercase; margin-bottom: .8rem; }
+.sc-remove-hint { margin-top: 1.6rem; font-size: 1.35rem; }
+.sc-field { display: flex; flex-direction: column; gap: .6rem; color: $soft; font-size: 1.35rem; margin-top: 1.6rem; input { color: $text; font-size: 2rem; letter-spacing: .3em; } }
+
+/* ---------- team split: pitch with two halves ---------- */
+.sc-split-bar { display: flex; justify-content: space-between; align-items: flex-end; gap: 1.6rem; flex-wrap: wrap; margin-bottom: 1.8rem;
+    p { margin-top: .6rem; max-width: 52rem; } }
+.sc-pitch {
+    position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 0 minmax(0, 1fr);
+    border-radius: 1.8rem; overflow: hidden; min-height: 42rem;
+    background: repeating-linear-gradient(90deg, $stripe-a 0 7rem, $stripe-b 7rem 14rem);
+    box-shadow: inset 0 0 0 .3rem $chalk;
+}
+/* halfway line + centre circle live on the divider between the halves */
+.sc-pitch-center { position: relative; z-index: 2;
+    &::before { content: ""; position: absolute; left: 50%; top: 50%; width: 15rem; height: 15rem; translate: -50% -50%; border-radius: 50%; box-shadow: inset 0 0 0 .3rem $chalk; pointer-events: none; }
+    &::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: .3rem; translate: -50% 0; background: $chalk; pointer-events: none; } }
+.sc-half {
+    position: relative; z-index: 1; padding: 2rem 2.2rem 2.4rem; display: flex; flex-direction: column; gap: 1.2rem; transition: background .2s;
+    &.team2 { padding-left: 4rem; }
+    &.team1 { padding-right: 4rem; }
+    &.over { background: rgba(200, 240, 49, .1); }
+}
+.sc-half-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    h3 { display: flex; align-items: center; gap: .8rem; font-family: $display; font-weight: 800; font-size: 2.8rem; text-transform: uppercase; line-height: 1; } }
+.sc-kit { width: 1.8rem; height: 2.2rem; border-radius: .4rem .4rem .6rem .6rem; background: $accent; box-shadow: 0 0 0 .2rem rgba(5, 13, 9, .4);
+    .team2 & { background: $bib; } }
+.sc-half-score { display: flex; flex-direction: column; align-items: flex-end; line-height: 1; padding: .6rem 1.2rem; border-radius: $r-sm; background: rgba(5, 13, 9, .55);
+    b { font-family: $display; font-weight: 800; font-size: 3rem; color: $accent; font-variant-numeric: tabular-nums; }
+    small { font-size: 1.1rem; color: $soft; text-transform: uppercase; letter-spacing: .06em; }
+    .team2 & b { color: $bib; } }
+.sc-half-meta { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; font-size: 1.35rem; color: $soft; > span:first-child { margin-right: .4rem; } }
+.sc-tier-count { font-family: $display; font-weight: 700; font-size: 1.4rem; padding: .1rem .8rem; border-radius: .6rem; background: rgba(5, 13, 9, .5); color: $text; }
+.sc-tokens { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.6rem, 1fr)); gap: 1rem; align-content: start; flex: 1; }
+.sc-token {
+    position: relative; display: flex; flex-direction: column; align-items: center; gap: .5rem; padding: .8rem .4rem; border-radius: $r-sm;
+    touch-action: manipulation; user-select: none; transition: transform .25s $ease, background .2s, opacity .2s;
+    &:hover { background: rgba(5, 13, 9, .3); }
+    .sc-grip { position: absolute; top: .2rem; right: .2rem; }
+    .sc-token-name { font-weight: 600; font-size: 1.3rem; line-height: 1.2; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+.sc-token-avatar { position: relative; display: inline-block;
+    .sc-avatar { box-shadow: 0 0 0 .25rem $accent; }
+    .sc-tier { position: absolute; right: -.6rem; bottom: -.4rem; min-width: 2.1rem; height: 2.1rem; font-size: 1.3rem; box-shadow: 0 0 0 .2rem $stripe-a; } }
+.team2 .sc-token-avatar .sc-avatar { box-shadow: 0 0 0 .25rem $bib; }
+.sc-pill .sc-token-avatar .sc-avatar { box-shadow: none; }
+.sc-grip { width: 2.4rem; height: 2.4rem; display: grid; place-items: center; border-radius: .6rem; color: $soft; font-size: 1.8rem; cursor: grab; touch-action: none; }
+.sc-token.selected, .sc-pill.selected { background: rgba(200, 240, 49, .18); box-shadow: inset 0 0 0 .2rem $accent; }
+.sc-token.lifted, .sc-pill.lifted { opacity: .3; }
+.sc-zone-empty { grid-column: 1 / -1; color: rgba(236, 246, 238, .55); font-size: 1.4rem; padding: 2rem 0; text-align: center; border: .15rem dashed rgba(236, 246, 238, .22); border-radius: $r-sm; }
+.sc-drop-here { display: flex; align-items: center; justify-content: center; gap: .6rem; width: 100%; padding: 1rem; border-radius: $r-sm; color: $accent-ink !important; background: $accent !important; font-weight: 600; font-size: 1.4rem; animation: sc-pop .25s $ease; }
+.sc-balance { position: absolute; z-index: 1; left: 50%; top: 50%; translate: -50% -50%; white-space: nowrap; font-family: $display; font-weight: 800; font-size: 1.5rem; text-transform: uppercase;
+    padding: .5rem 1.2rem; border-radius: 99rem; background: $warn; color: #2b1a00;
+    &.fair { background: $accent; color: $accent-ink; } }
+
+.sc-sidelines { display: grid; grid-template-columns: 2fr 1fr; gap: 1.4rem; margin-top: 1.6rem; }
+.sc-sideline { background: $surface; box-shadow: inset 0 0 0 .1rem $line; border-radius: $r; padding: 1.6rem 1.8rem; display: flex; flex-direction: column; gap: 1.2rem; transition: box-shadow .2s, background .2s;
+    &.over { box-shadow: inset 0 0 0 .2rem $accent; background: rgba(200, 240, 49, .06); }
+    &.absent { background: rgba(17, 36, 26, .55); } }
+.sc-sideline-head { display: flex; justify-content: space-between; align-items: center;
+    h3 { display: flex; align-items: center; gap: .6rem; font-family: $display; font-weight: 700; font-size: 2rem; text-transform: uppercase; i { color: $soft; } }
+    span { font-family: $display; font-weight: 800; font-size: 2rem; color: $soft; } }
+.sc-chips-row { display: flex; flex-wrap: wrap; gap: .8rem; }
+.sc-pill { display: inline-flex; align-items: center; gap: .6rem; padding: .5rem 1rem .5rem .4rem; border-radius: 99rem; background: rgba(5, 13, 9, .4); box-shadow: inset 0 0 0 .1rem $line;
+    touch-action: manipulation; user-select: none; transition: background .2s, opacity .2s;
+    &:hover { background: rgba(236, 246, 238, .06); }
+    .sc-token-avatar .sc-tier { right: -.5rem; bottom: -.3rem; min-width: 1.7rem; height: 1.7rem; font-size: 1.1rem; box-shadow: 0 0 0 .2rem $surface; }
+    .sc-token-name { font-weight: 600; font-size: 1.4rem; white-space: nowrap; }
+    .sc-grip { order: 3; width: 2rem; margin-left: -.2rem; } }
+.sc-absent .sc-pill, .sc-sideline.absent .sc-pill { opacity: .65; }
+.sc-split-actions { display: flex; justify-content: space-between; align-items: center; gap: 1.2rem; flex-wrap: wrap; margin-top: 1.8rem; }
+.sc-save-match { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.sc-ghost { position: fixed; left: 0; top: 0; z-index: 70; pointer-events: none; will-change: transform; &[hidden] { display: none; } }
+.sc-chip-ghost { display: inline-flex; align-items: center; gap: .6rem; padding: .5rem 1.2rem .5rem .5rem; border-radius: 99rem; translate: -50% -50%; rotate: -3deg;
+    background: $accent; color: $accent-ink; font-weight: 700; box-shadow: 0 1.6rem 3rem rgba(0, 0, 0, .45); }
+
+/* ---------- fund ---------- */
+.sc-lockbar { display: flex; align-items: center; gap: 1.2rem; padding: 1.2rem 1.6rem; border-radius: $r; margin-bottom: 1.6rem;
+    background: rgba(255, 181, 71, .1); box-shadow: inset 0 0 0 .1rem rgba(255, 181, 71, .35);
+    > i { font-size: 2.2rem; color: $warn; }
+    .sc-grow { white-space: normal; }
+    &.open { background: rgba(200, 240, 49, .08); box-shadow: inset 0 0 0 .1rem rgba(200, 240, 49, .35); > i { color: $accent; } } }
+.sc-fund-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.6rem; flex-wrap: wrap; margin-bottom: 1.6rem; }
+.sc-fee { label { display: block; color: $soft; font-size: 1.35rem; margin-bottom: .4rem; } div { display: flex; gap: .8rem; } input { width: 15rem; } }
+.sc-paylist, .sc-expenses { list-style: none; display: grid; gap: .2rem;
+    li { display: flex; align-items: center; gap: 1rem; padding: .8rem .4rem; min-width: 0; border-radius: $r-sm; }
+    li:hover { background: rgba(236, 246, 238, .03); }
+    b { font-family: $display; font-size: 1.9rem; } }
+.sc-expense-form { display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap; margin-top: 1.6rem; padding-top: 1.6rem; box-shadow: inset 0 .1rem 0 $line;
+    label { display: flex; flex-direction: column; gap: .4rem; color: $soft; font-size: 1.35rem; input { color: $text; } }
+    label.sc-grow { flex: 1 1 20rem; white-space: normal; overflow: visible; }
+    .sc-error { width: 100%; } }
+
+/* ---------- schedule: fixture tickets ---------- */
+.sc-match-form h3 { margin-bottom: 1.4rem; }
+.sc-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.4rem;
+    label { display: flex; flex-direction: column; gap: .5rem; color: $soft; font-size: 1.35rem; input { color: $text; width: 100%; } } }
+.sc-match-form .sc-btn { margin-top: 1rem; }
+.sc-match-list { display: grid; gap: 1.2rem; }
+.sc-match { background: $surface; box-shadow: inset 0 0 0 .1rem $line; border-radius: $r; padding: 1.8rem 2rem;
+    &.featured { background: repeating-linear-gradient(90deg, $stripe-a 0 7rem, $stripe-b 7rem 14rem); box-shadow: inset 0 0 0 .2rem $chalk; }
+    h3 { font-family: $display; font-weight: 700; font-size: 2.2rem; line-height: 1.15; margin: .4rem 0 .2rem; text-transform: capitalize; }
+    p { display: flex; align-items: center; gap: .4rem; } }
+.sc-match-head { display: flex; gap: 1.8rem; align-items: center; }
+.sc-date-block { flex-shrink: 0; width: 7.2rem; padding: .8rem 0; border-radius: $r-sm; text-align: center; background: #050d09; box-shadow: inset 0 0 0 .1rem $line; line-height: 1.1;
+    small { display: block; font-size: 1.15rem; color: $soft; text-transform: uppercase; font-weight: 600; }
+    b { display: block; font-family: $display; font-weight: 800; font-size: 3.4rem; color: $accent; line-height: 1; } }
+.sc-match-info { flex: 1; min-width: 0; }
+.sc-score { flex-shrink: 0; text-align: right;
+    input { width: 12rem; text-align: center; font-family: $display; font-weight: 800; font-size: 2.6rem; padding: .4rem 1rem; background: #050d09 !important; color: $accent !important; }
+    b { display: inline-block; font-family: $display; font-weight: 800; font-size: 3.4rem; color: $accent; padding: .2rem 1.4rem; border-radius: $r-sm; background: #050d09; font-variant-numeric: tabular-nums; } }
+.sc-match-teams { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1.6rem; &.n3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } &.n4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.sc-mini-team { background: rgba(5, 13, 9, .45); border-radius: $r-sm; padding: 1.2rem;
+    b { display: block; margin-bottom: .6rem; font-family: $display; font-weight: 800; font-size: 1.8rem; text-transform: uppercase; }
+    &.c0 b { color: $accent; } &.c1 b { color: $bib; } }
+.sc-avatars { display: flex; flex-wrap: wrap; gap: .4rem; }
+.sc-match-actions { display: flex; gap: 1.6rem; align-items: center; justify-content: flex-end; flex-wrap: wrap; margin-top: 1.2rem; .sc-link-danger { margin: 0; } }
+
+/* ---------- loading + toast ---------- */
+.sc-skeleton { width: min(60rem, 100%); display: grid; gap: 1.2rem;
+    span { height: 7rem; border-radius: $r; background: linear-gradient(90deg, $surface 25%, $surface-2 50%, $surface 75%); background-size: 200% 100%; animation: sc-shimmer 1.4s infinite; } }
+@keyframes sc-shimmer { to { background-position: -200% 0; } }
+.sc-toast { position: fixed; left: 50%; bottom: calc(2.4rem + env(safe-area-inset-bottom, 0px)); translate: -50% 0; z-index: 60; max-width: calc(100vw - 3.2rem);
+    padding: 1.2rem 2rem; border-radius: $r; background: $accent; color: $accent-ink; font-weight: 600; box-shadow: 0 1.6rem 4rem rgba(0, 0, 0, .45); animation: sc-pop .3s $ease;
+    &.error { background: $danger; color: #2b0805; } }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1000px) {
+    .sc-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); .highlight { grid-column: span 2; } }
+    .sc-match-teams.n3, .sc-match-teams.n4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sc-scorers ol { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+    .sc-wrap { padding: 0 1.6rem; }
+    .sc-header-row { flex-wrap: wrap; row-gap: 1rem; }
+    .sc-title h1 { font-size: 2.8rem; }
+    .sc-scoreboard { order: 3; width: 100%; > div { flex: 1; padding: .5rem .6rem; } dd { font-size: 2.2rem; } }
+    .sc-tabs button { font-size: 1.6rem; padding: .9rem 1.2rem 1.1rem; }
+    .sc-two, .sc-form-grid, .sc-sidelines { grid-template-columns: 1fr; }
+    .sc-span-2 { grid-column: auto; }
+    .sc-admin-fields { grid-template-columns: 1fr; }
+    .sc-dialog { padding: 2.2rem 1.8rem; border-radius: 1.6rem; }
+    .sc-detail-head { margin: -2.2rem -1.8rem 2rem; padding: 2.4rem 5.6rem 2rem 1.8rem; }
+    .sc-members { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .sc-card-name { font-size: 1.8rem; }
+    .sc-card-stats { flex-direction: column; align-items: center; gap: .4rem; }
+    .sc-match-head { flex-wrap: wrap; }
+    .sc-score { width: 100%; text-align: left; input { width: 100%; } }
+    /* pitch turns vertical: Team 1 on top, Team 2 below, halfway line across */
+    .sc-pitch { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 0 auto; min-height: 0;
+        background: repeating-linear-gradient(180deg, $stripe-a 0 7rem, $stripe-b 7rem 14rem); }
+    .sc-pitch-center {
+        &::after { left: 0; right: 0; top: 50%; bottom: auto; width: auto; height: .3rem; translate: 0 -50%; }
+        &::before { width: 11rem; height: 11rem; } }
+    .sc-half { padding: 1.8rem 1.6rem; &.team1 { padding-right: 1.6rem; padding-bottom: 6.6rem; } &.team2 { padding-left: 1.6rem; padding-top: 6.6rem; } }
+    .sc-tokens { grid-template-columns: repeat(auto-fill, minmax(8.4rem, 1fr)); }
+    .sc-split-actions { flex-direction: column; align-items: stretch; .sc-btn { width: 100%; } }
+    .sc-save-match { flex-direction: column; align-items: stretch; .sc-select { justify-content: space-between; select { flex: 1; } } }
+}
+@media (max-width: 340px) {
+    .sc-members { grid-template-columns: 1fr; }
+    .sc-match-teams, .sc-match-teams.n3, .sc-match-teams.n4 { grid-template-columns: 1fr; }
+    .sc-scoreboard dt { font-size: 1rem; }
+}
+@media (hover: none) {
+    .sc-member:hover { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .sc-page *, .sc-overlay, .sc-dialog, .sc-toast { animation: none !important; transition: none !important; }
+}

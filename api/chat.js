@@ -15,6 +15,7 @@
 const { buildSystemInstruction } = require('./_lib/knowledge');
 const { checkRateLimit } = require('./_lib/rateLimit');
 const { getProviderConfig, generateReply } = require('./_lib/provider');
+const { RequestError, send, getClientIp, readBody, assertJsonRequest } = require('./_lib/http');
 
 const MAX_BODY_BYTES = 32 * 1024;
 const MAX_MESSAGES = 20; // accepted from the client
@@ -43,94 +44,8 @@ const MESSAGES = {
   internal_error: 'Something went wrong. Please try again later.',
 };
 
-class RequestError extends Error {
-  constructor(status, code, detail) {
-    super(detail || code);
-    this.status = status;
-    this.code = code;
-  }
-}
-
-function send(res, status, payload, headers = {}) {
-  res.statusCode = status;
-  res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  res.setHeader('Cache-Control', 'no-store');
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  Object.entries(headers).forEach(([key, value]) => res.setHeader(key, value));
-  res.end(JSON.stringify(payload));
-}
-
 function sendError(res, status, code, headers) {
   send(res, status, { error: { code, message: MESSAGES[code] || MESSAGES.internal_error } }, headers);
-}
-
-function firstHeader(value) {
-  return (Array.isArray(value) ? value[0] : value || '').split(',')[0].trim();
-}
-
-function getClientIp(req) {
-  return firstHeader(req.headers['x-real-ip'])
-    || firstHeader(req.headers['x-forwarded-for'])
-    || (req.socket && req.socket.remoteAddress)
-    || 'unknown';
-}
-
-/**
- * Browsers always send Origin on cross-site POSTs, so this blocks other
- * websites from embedding the endpoint. It is NOT protection against scripts
- * (they can omit or forge Origin) — rate limiting covers that.
- */
-function isAllowedOrigin(req) {
-  const origin = firstHeader(req.headers.origin);
-  if (!origin) return true;
-  let parsed;
-  try {
-    parsed = new URL(origin);
-  } catch (err) {
-    return false;
-  }
-  const host = firstHeader(req.headers['x-forwarded-host']) || firstHeader(req.headers.host);
-  if (parsed.host === host) return true;
-  const extra = (process.env.ALLOWED_ORIGINS || '').split(',').map((o) => o.trim().replace(/\/+$/, ''));
-  return extra.includes(parsed.origin);
-}
-
-async function readBody(req) {
-  // Vercel pre-parses JSON bodies; its getter throws on malformed JSON.
-  let parsed;
-  try {
-    parsed = req.body;
-  } catch (err) {
-    throw new RequestError(400, 'invalid_json');
-  }
-  if (parsed !== undefined && parsed !== null && typeof parsed !== 'string' && !Buffer.isBuffer(parsed)) {
-    return parsed;
-  }
-
-  let raw = typeof parsed === 'string' || Buffer.isBuffer(parsed) ? String(parsed) : '';
-  if (!raw && typeof req.on === 'function') {
-    raw = await new Promise((resolve, reject) => {
-      const chunks = [];
-      let size = 0;
-      req.on('data', (chunk) => {
-        size += chunk.length;
-        if (size > MAX_BODY_BYTES) {
-          reject(new RequestError(413, 'payload_too_large'));
-          req.destroy();
-          return;
-        }
-        chunks.push(chunk);
-      });
-      req.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
-      req.on('error', reject);
-    });
-  }
-  if (Buffer.byteLength(raw) > MAX_BODY_BYTES) throw new RequestError(413, 'payload_too_large');
-  try {
-    return JSON.parse(raw);
-  } catch (err) {
-    throw new RequestError(400, 'invalid_json');
-  }
 }
 
 /** Validates the payload and returns the trimmed history to send to the model. */
@@ -188,15 +103,8 @@ async function handler(req, res) {
     return sendError(res, 405, 'method_not_allowed', { Allow: 'POST' });
   }
   try {
-    if (!isAllowedOrigin(req)) return sendError(res, 403, 'forbidden_origin');
-
-    const contentType = String(req.headers['content-type'] || '').toLowerCase();
-    if (!contentType.startsWith('application/json')) return sendError(res, 415, 'unsupported_media_type');
-
-    const declaredLength = Number(req.headers['content-length']);
-    if (declaredLength > MAX_BODY_BYTES) return sendError(res, 413, 'payload_too_large');
-
-    const history = validateMessages(await readBody(req));
+    assertJsonRequest(req, MAX_BODY_BYTES);
+    const history = validateMessages(await readBody(req, MAX_BODY_BYTES));
 
     const config = getProviderConfig();
     if (config.error) {

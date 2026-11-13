@@ -66,6 +66,21 @@ async function incrementRedis(redis, rules) {
   });
 }
 
+async function peekRedis(redis, rules) {
+  const response = await fetch(`${redis.url}/pipeline`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${redis.token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(rules.map((r) => ['GET', r.key])),
+    signal: AbortSignal.timeout(2000),
+  });
+  if (!response.ok) throw new Error(`Upstash responded ${response.status}`);
+  const results = await response.json();
+  return rules.map((_, i) => {
+    if (!results[i] || results[i].error) throw new Error(`Upstash error: ${results[i] && results[i].error}`);
+    return Number(results[i].result || 0);
+  });
+}
+
 const memoryCounters = new Map();
 
 function incrementMemory(rules, now) {
@@ -114,8 +129,35 @@ async function checkRateLimit(ip, { now = Date.now(), env = process.env, logger 
   };
 }
 
+/**
+ * A single fixed-window counter for any other endpoint (e.g. failed admin PIN
+ * attempts). Same storage and fail-open behaviour as checkRateLimit.
+ */
+async function hitLimit(name, ip, { limit, windowSeconds, peek = false, now = Date.now(), env = process.env, logger = console }) {
+  const windowIndex = Math.floor(now / (windowSeconds * 1000));
+  const rules = [{
+    key: `${name}:rl:${hashClient(ip || 'unknown')}:${windowIndex}`,
+    limit,
+    ttl: windowSeconds,
+    resetAt: (windowIndex + 1) * windowSeconds * 1000,
+  }];
+  const redis = getRedisConfig(env);
+  let counts;
+  if (redis) {
+    try {
+      counts = peek ? await peekRedis(redis, rules) : await incrementRedis(redis, rules);
+    } catch (err) {
+      logger.error(`[${name}] rate limit store unavailable, using in-memory fallback:`, err.message);
+    }
+  }
+  if (!counts) counts = peek ? rules.map((r) => (memoryCounters.get(r.key) || { count: 0 }).count) : incrementMemory(rules, now);
+  // peek: "is there room for one more?"; increment: "was this one within the limit?"
+  const allowed = peek ? counts[0] < limit : counts[0] <= limit;
+  return { allowed, retryAfter: allowed ? 0 : Math.max(1, Math.ceil((rules[0].resetAt - now) / 1000)) };
+}
+
 function resetMemoryRateLimit() {
   memoryCounters.clear();
 }
 
-module.exports = { checkRateLimit, getLimits, getRedisConfig, resetMemoryRateLimit };
+module.exports = { checkRateLimit, hitLimit, getLimits, getRedisConfig, resetMemoryRateLimit };
